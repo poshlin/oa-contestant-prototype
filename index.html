@@ -360,76 +360,6 @@
     }
 
     /* ══════════════════════════════════════
-       MAST（暗夜頁首）
-    ══════════════════════════════════════ */
-    .masthead {
-      background: var(--bg-dark);
-      border-bottom: 1px solid var(--line-dim);
-      padding: 16px 0;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      backdrop-filter: blur(10px);
-    }
-    .masthead-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-      max-width: 1320px;
-      margin: 0 auto;
-      padding: 0 48px;
-    }
-    @media (max-width: 768px) { .masthead-inner { padding: 0 22px; } }
-    .masthead-brand {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      text-decoration: none;
-    }
-    .masthead-logo {
-      height: 30px;
-      filter: brightness(1.1);
-    }
-    .masthead-meta {
-      display: none;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.74rem;
-      letter-spacing: 2.5px;
-      color: var(--text-dim);
-      text-transform: uppercase;
-      gap: 16px;
-      align-items: center;
-    }
-    @media (min-width: 1024px) { .masthead-meta { display: inline-flex; } }
-    .masthead-meta-sep { color: var(--orange); }
-    .masthead-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 22px;
-      background: transparent;
-      color: var(--orange);
-      font-size: 0.84rem;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      border: 1px solid var(--orange);
-      cursor: pointer;
-      font-family: 'JetBrains Mono', monospace;
-      text-transform: uppercase;
-      transition: all 0.2s;
-    }
-    .masthead-cta:hover {
-      background: var(--orange);
-      color: var(--bg-dark);
-      box-shadow: 0 0 24px var(--orange-glow);
-    }
-    @media (max-width: 768px) {
-      .masthead-cta { padding: 8px 14px; font-size: 0.74rem; }
-      .masthead-cta-text { display: none; }
-    }
-
-    /* ══════════════════════════════════════
        PROLOGUE / HERO
     ══════════════════════════════════════ */
     .hero {
@@ -2527,26 +2457,6 @@
 
   <!-- 進度條 -->
   <div class="read-progress" id="readProgress" aria-hidden="true"></div>
-
-  <!-- ══ MAST ══ -->
-  <header class="masthead">
-    <div class="masthead-inner">
-      <a href="https://orangeapple.co" class="masthead-brand">
-        <img src="oappt/assets/logo-2023-white.svg" alt="橘子蘋果" class="masthead-logo">
-      </a>
-      <div class="masthead-meta">
-        <span>// THE QUEST</span>
-        <span class="masthead-meta-sep">▸</span>
-        <span>Contestant Class</span>
-        <span class="masthead-meta-sep">▸</span>
-        <span>v15 · 2026</span>
-      </div>
-      <button type="button" class="masthead-cta" data-bs-toggle="modal" data-bs-target="#trialModal" data-content-type="for-trial">
-        <span class="masthead-cta-text">[ ENTER ]</span>
-        <span>→</span>
-      </button>
-    </div>
-  </header>
 
   <!-- ══════════════════════════════════════
        PROLOGUE / HERO
