@@ -1138,6 +1138,130 @@
       flex-wrap: wrap;
     }
 
+    /* ── 04 章：開課梯次卡 ── */
+    .slot-grid {
+      max-width: 880px;
+      margin: 40px auto 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+    @media (max-width: 768px) {
+      .slot-grid { grid-template-columns: 1fr; gap: 14px; margin-top: 32px; }
+    }
+    .slot-card {
+      background: var(--bg-dark);
+      border: 1px solid var(--line-bright);
+      padding: 24px 22px 22px;
+      position: relative;
+      transition: all 0.3s;
+    }
+    .slot-card.slot-active {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 1px var(--orange), 0 0 28px var(--orange-glow);
+    }
+    .slot-card.slot-planning {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 1px rgba(0,229,201,0.25), 0 0 20px rgba(0,229,201,0.12);
+      opacity: 0.92;
+    }
+    .slot-card::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 56px; height: 3px;
+    }
+    .slot-active::before { background: var(--orange); box-shadow: 0 0 12px var(--orange); }
+    .slot-planning::before { background: var(--teal); box-shadow: 0 0 12px var(--teal); }
+    .slot-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      gap: 12px;
+    }
+    .slot-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 1.5px;
+      font-weight: 700;
+      padding: 4px 10px;
+      text-transform: uppercase;
+    }
+    .slot-active .slot-tag { background: var(--orange); color: var(--bg-dark); box-shadow: 0 0 14px var(--orange-glow); }
+    .slot-planning .slot-tag { background: var(--teal); color: #003E37; }
+    .slot-label-en {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.66rem;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+    .slot-title {
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: var(--text-light);
+      margin: 0 0 18px;
+      letter-spacing: -0.5px;
+    }
+    .slot-coach {
+      padding: 16px;
+      background: rgba(255,255,255,0.025);
+      border-left: 3px solid var(--orange);
+      margin-bottom: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .slot-planning .slot-coach { border-left-color: var(--teal); }
+    .slot-coach-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .slot-coach-name {
+      font-size: 1.1rem;
+      color: var(--text-light);
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+    .slot-coach-note {
+      font-size: 0.82rem;
+      color: var(--text-mute);
+      margin-top: 4px;
+    }
+    .slot-meta {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+    }
+    .slot-meta li {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px dashed var(--line-soft);
+    }
+    .slot-meta li:last-child { border-bottom: 0; }
+    .slot-meta li span { color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; }
+    .slot-meta li strong { color: var(--text-light); font-weight: 700; }
+    .slot-note {
+      max-width: 880px;
+      margin: 18px auto 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--text-mute);
+      letter-spacing: 1px;
+      text-align: center;
+    }
+
     /* ── 04 章：綠茶老師 YouTube 介紹影片（facade 模式） ── */
     .mentor-video-card {
       max-width: 880px;
@@ -2517,7 +2641,7 @@
         <span class="hero-stat-label">週<br>WEEKS</span>
       </div>
       <div class="hero-stat-cell">
-        <span class="hero-stat-num">12</span>
+        <span class="hero-stat-num">8</span>
         <span class="hero-stat-label">人小班<br>PARTY SIZE</span>
       </div>
       <div class="hero-stat-cell">
@@ -2732,20 +2856,25 @@
     <div class="container-wide">
       <div class="chapter-header">
         <span class="chapter-num">04 / 12</span>
-        <span class="chapter-name">THE MENTOR</span>
-        <span class="chapter-tag">導師角色卡</span>
+        <span class="chapter-name">HEAD COACH</span>
+        <span class="chapter-tag">總教練 + 教練體系</span>
       </div>
 
-      <h2 class="epic-headline" style="margin-bottom: 48px;">
-        遇見你的<span class="accent">導師</span>。
+      <h2 class="epic-headline" style="margin-bottom: 24px;">
+        他<span class="accent">設計這套訓練</span>，<br>
+        並培訓所有教練。
       </h2>
+      <p class="epic-lede" style="margin-bottom: 48px;">
+        綠茶老師是橘蘋選手班的<strong>總教練</strong>與系統設計者。<br>
+        週五晚上班由他<strong>親自帶班多年</strong>；新時段班次則由他<strong>培訓認證的教練群</strong>授課，採同一套教材、同一套 code review 方法。
+      </p>
 
       <div class="mentor-card">
         <div class="mentor-portrait">
           <div class="mentor-avatar"><img src="assets/C-mentor.png" alt="綠茶老師 NPC 立繪" loading="lazy"></div>
-          <h3 class="mentor-name">綠茶 老師</h3>
-          <span class="mentor-class">▸ CLASS · 演算法導師</span>
-          <span class="mentor-level">LV. 99 · ALGORITHM</span>
+          <h3 class="mentor-name">綠茶 總教練</h3>
+          <span class="mentor-class">▸ CLASS · 總教練 / 教練培訓官</span>
+          <span class="mentor-level">LV. 99 · HEAD COACH</span>
         </div>
         <div class="mentor-body">
           <div class="mentor-section">
@@ -2765,8 +2894,18 @@
               <span class="hud-chip">Code Review</span>
               <span class="hud-chip">演算法精通</span>
               <span class="hud-chip">競賽輔導</span>
-              <span class="hud-chip">客製化訓練</span>
+              <span class="hud-chip">教練培訓認證</span>
             </div>
+          </div>
+
+          <div class="mentor-section">
+            <div class="mentor-section-label">▸ ROLE · 體系定位</div>
+            <ul>
+              <li><strong>系統設計者</strong>：15 週課綱、解題教材、code review 方法</li>
+              <li><strong>教練培訓官</strong>：認證每一位帶選手班的教練</li>
+              <li><strong>品質督導</strong>：每梯次學習成果回收 + 教學品質審核</li>
+              <li><strong>週五班主帶</strong>：親自授課多年，最熟悉訓練節奏</li>
+            </ul>
           </div>
 
           <div class="mentor-section">
@@ -2776,12 +2915,54 @@
         </div>
       </div>
 
+      <!-- 開課梯次說明（避免家長預期落差，誠實揭露不同時段的授課老師） -->
+      <div class="slot-grid" data-aos="fade-up">
+        <div class="slot-card slot-active">
+          <div class="slot-head">
+            <span class="slot-tag">▸ ACTIVE · 招生中</span>
+            <span class="slot-label-en">FRIDAY · EVENING</span>
+          </div>
+          <h4 class="slot-title">週五晚上班</h4>
+          <div class="slot-coach">
+            <span class="slot-coach-label">主帶教練</span>
+            <strong class="slot-coach-name">綠茶 總教練</strong>
+            <span class="slot-coach-note">親自授課 · 持續多年</span>
+          </div>
+          <ul class="slot-meta">
+            <li><span>每週上課</span><strong>週五晚間</strong></li>
+            <li><span>每期長度</span><strong>15 週</strong></li>
+            <li><span>每班人數</span><strong>8 人小班</strong></li>
+          </ul>
+        </div>
+
+        <div class="slot-card slot-planning">
+          <div class="slot-head">
+            <span class="slot-tag">▸ PLANNING · 籌備中</span>
+            <span class="slot-label-en">SATURDAY · TBD</span>
+          </div>
+          <h4 class="slot-title">週六新時段班</h4>
+          <div class="slot-coach">
+            <span class="slot-coach-label">主帶教練</span>
+            <strong class="slot-coach-name">教練群（綠茶認證）</strong>
+            <span class="slot-coach-note">綠茶總教練督導 · 採同套教材</span>
+          </div>
+          <ul class="slot-meta">
+            <li><span>每週上課</span><strong>週六時段</strong></li>
+            <li><span>每期長度</span><strong>15 週</strong></li>
+            <li><span>每班人數</span><strong>8 人小班</strong></li>
+          </ul>
+        </div>
+      </div>
+      <p class="slot-note">
+        ▸ 實際授課老師依梯次安排。報名時專員會與您確認時段與授課教練資訊。
+      </p>
+
       <!-- 綠茶老師 YouTube 介紹影片（facade 模式） -->
       <div class="mentor-video-card">
         <div class="mentor-video-head">
-          <span class="mentor-video-eyebrow">▸ INTRO VIDEO · 親自介紹</span>
-          <h3 class="mentor-video-title">看老師<span class="accent">親口告訴你</span>：選手班怎麼帶？</h3>
-          <p class="mentor-video-desc">綠茶老師親自說明選手班的訓練方式、教學風格、與一般程式課的根本差異。</p>
+          <span class="mentor-video-eyebrow">▸ INTRO VIDEO · 總教練說明</span>
+          <h3 class="mentor-video-title">聽總教練親口說：<br>選手班是<span class="accent">怎麼設計的</span>？</h3>
+          <p class="mentor-video-desc">綠茶總教練親自說明選手班的訓練系統、教練培訓標準，以及與一般程式課的根本差異。<br>無論哪個梯次、由哪位教練授課，都採同一套系統。</p>
         </div>
         <div class="yt-facade" data-yt-id="NhBIeeThNhY" role="button" tabindex="0" aria-label="播放綠茶老師介紹選手班影片">
           <img class="yt-facade-thumb" src="https://img.youtube.com/vi/NhBIeeThNhY/maxresdefault.jpg" alt="綠茶老師親口介紹選手班 - 點擊播放" loading="lazy" onerror="this.src='https://img.youtube.com/vi/NhBIeeThNhY/hqdefault.jpg'">
@@ -3462,13 +3643,27 @@
             <span class="mb-q-toggle">+</span>
           </div>
           <div class="mb-a"><div class="mb-a-inner">
-            一般程式班教孩子「<strong>會寫程式</strong>」，APCS 培訓班是「<strong>準備 APCS 一場檢定</strong>」。選手班是更高階的長期訓練：差異化分級 + 全年競賽路徑 + 教練 code review + 解題文章撰寫 + 淘汰機制，目標是讓孩子 <strong>從 APCS 2 級分推到 5 級分、進入資科系所</strong>。
+            一般程式班教孩子「<strong>會寫程式</strong>」，APCS 培訓班是「<strong>準備 APCS 一場檢定</strong>」。選手班是更高階的長期訓練：差異化分級 + 全年競賽路徑 + 教練 code review + 解題文章撰寫 + 2 次補課保證，目標是讓孩子 <strong>從 APCS 2 級分推到 5 級分、進入資科系所</strong>。
+          </div></div>
+        </li>
+
+        <li class="mb-item" data-cat="content">
+          <div class="mb-q" onclick="this.parentElement.classList.toggle('open')">
+            <span class="mb-q-num">FILE.04</span>
+            <span class="mb-q-text">誰會是我孩子的授課老師？是綠茶老師親自教嗎？</span>
+            <span class="mb-q-toggle">+</span>
+          </div>
+          <div class="mb-a"><div class="mb-a-inner">
+            <strong>視梯次而定，誠實揭露</strong>：<br>
+            ① <strong>週五晚上班</strong> — 由<strong>綠茶總教練親自帶班</strong>，這個班別已持續多年。<br>
+            ② <strong>其他新時段班（如週六）</strong> — 由<strong>綠茶總教練培訓認證的教練群</strong>授課。所有教練皆通過綠茶總教練的培訓、採用同一套教材、同一套 code review 方法，並由綠茶總教練持續督導教學品質。<br>
+            報名前，專員會與您確認您想要的時段、實際授課教練的背景資料。
           </div></div>
         </li>
 
         <li class="mb-item" data-cat="signup">
           <div class="mb-q" onclick="this.parentElement.classList.toggle('open')">
-            <span class="mb-q-num">FILE.04</span>
+            <span class="mb-q-num">FILE.05</span>
             <span class="mb-q-text">沒參加過競賽，可以上嗎？</span>
             <span class="mb-q-toggle">+</span>
           </div>
@@ -3479,7 +3674,7 @@
 
         <li class="mb-item" data-cat="signup">
           <div class="mb-q" onclick="this.parentElement.classList.toggle('open')">
-            <span class="mb-q-num">FILE.05</span>
+            <span class="mb-q-num">FILE.06</span>
             <span class="mb-q-text">幾年級適合？需要什麼基礎？</span>
             <span class="mb-q-toggle">+</span>
           </div>
@@ -3490,7 +3685,7 @@
 
         <li class="mb-item" data-cat="signup">
           <div class="mb-q" onclick="this.parentElement.classList.toggle('open')">
-            <span class="mb-q-num">FILE.06</span>
+            <span class="mb-q-num">FILE.07</span>
             <span class="mb-q-text">需要準備什麼設備？為什麼不能用平板？</span>
             <span class="mb-q-toggle">+</span>
           </div>
@@ -3505,7 +3700,7 @@
 
         <li class="mb-item" data-cat="outcome">
           <div class="mb-q" onclick="this.parentElement.classList.toggle('open')">
-            <span class="mb-q-num">FILE.07</span>
+            <span class="mb-q-num">FILE.08</span>
             <span class="mb-q-text">一期 15 堂下來，孩子會累積什麼成果？</span>
             <span class="mb-q-toggle">+</span>
           </div>
@@ -3516,7 +3711,7 @@
 
         <li class="mb-item" data-cat="outcome">
           <div class="mb-q" onclick="this.parentElement.classList.toggle('open')">
-            <span class="mb-q-num">FILE.08</span>
+            <span class="mb-q-num">FILE.09</span>
             <span class="mb-q-text">課程強度會不會太硬？孩子吃得消嗎？</span>
             <span class="mb-q-toggle">+</span>
           </div>
@@ -3527,7 +3722,7 @@
 
         <li class="mb-item" data-cat="content">
           <div class="mb-q" onclick="this.parentElement.classList.toggle('open')">
-            <span class="mb-q-num">FILE.09</span>
+            <span class="mb-q-num">FILE.10</span>
             <span class="mb-q-text">一定要參加競賽嗎？只是想學演算法可以嗎？</span>
             <span class="mb-q-toggle">+</span>
           </div>
@@ -3538,7 +3733,7 @@
 
         <li class="mb-item" data-cat="content">
           <div class="mb-q" onclick="this.parentElement.classList.toggle('open')">
-            <span class="mb-q-num">FILE.10</span>
+            <span class="mb-q-num">FILE.11</span>
             <span class="mb-q-text">上課方式是講課還是練題？比例大概多少？</span>
             <span class="mb-q-toggle">+</span>
           </div>
@@ -3549,7 +3744,7 @@
 
         <li class="mb-item" data-cat="signup">
           <div class="mb-q" onclick="this.parentElement.classList.toggle('open')">
-            <span class="mb-q-num">FILE.11</span>
+            <span class="mb-q-num">FILE.12</span>
             <span class="mb-q-text">缺課可以補課嗎？課程進度怎麼安排？</span>
             <span class="mb-q-toggle">+</span>
           </div>
@@ -3563,7 +3758,7 @@
 
         <li class="mb-item" data-cat="outcome">
           <div class="mb-q" onclick="this.parentElement.classList.toggle('open')">
-            <span class="mb-q-num">FILE.12</span>
+            <span class="mb-q-num">FILE.13</span>
             <span class="mb-q-text">程式競賽對升學真的有幫助嗎？</span>
             <span class="mb-q-toggle">+</span>
           </div>
@@ -3574,7 +3769,7 @@
 
         <li class="mb-item" data-cat="outcome">
           <div class="mb-q" onclick="this.parentElement.classList.toggle('open')">
-            <span class="mb-q-num">FILE.13</span>
+            <span class="mb-q-num">FILE.14</span>
             <span class="mb-q-text">沒有 APCS 經驗，能跟得上嗎？</span>
             <span class="mb-q-toggle">+</span>
           </div>
@@ -3585,7 +3780,7 @@
 
         <li class="mb-item" data-cat="signup">
           <div class="mb-q" onclick="this.parentElement.classList.toggle('open')">
-            <span class="mb-q-num">FILE.14</span>
+            <span class="mb-q-num">FILE.15</span>
             <span class="mb-q-text">第一堂「能力測驗體驗課」是什麼？要怎麼準備？</span>
             <span class="mb-q-toggle">+</span>
           </div>
@@ -3596,7 +3791,7 @@
 
         <li class="mb-item" data-cat="signup">
           <div class="mb-q" onclick="this.parentElement.classList.toggle('open')">
-            <span class="mb-q-num">FILE.15</span>
+            <span class="mb-q-num">FILE.16</span>
             <span class="mb-q-text">課程退費規則？</span>
             <span class="mb-q-toggle">+</span>
           </div>
@@ -3632,7 +3827,7 @@
 
       <div class="ending-warn">
         <span>⚠</span>
-        <span>需通過<strong>能力測驗</strong>才能正式入會。12 人小班，<strong>額滿即停招</strong>。</span>
+        <span>需通過<strong>能力測驗</strong>才能正式入會。8 人小班，<strong>額滿即停招</strong>。</span>
       </div>
 
       <p class="ending-sub-link">
