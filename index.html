@@ -1895,7 +1895,27 @@
       margin-bottom: 56px;
     }
     @media (max-width: 991px) { .champions-top { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 575px) { .champions-top { grid-template-columns: 1fr; } }
+    /* 手機：6 hex 卡改橫滑 */
+    @media (max-width: 575px) {
+      .champions-top {
+        display: flex;
+        grid-template-columns: none;
+        flex-direction: row;
+        gap: 14px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding: 6px 22px 18px;
+        margin: 0 -22px 32px;
+        scrollbar-width: none;
+        scroll-padding-left: 22px;
+      }
+      .champions-top::-webkit-scrollbar { display: none; }
+      .champions-top .champ-card {
+        flex: 0 0 78%;
+        scroll-snap-align: start;
+        padding: 24px 20px 22px;
+      }
+    }
     .champ-card {
       background: #fff;
       border: 1px solid rgba(0,0,0,0.12);
@@ -2034,18 +2054,41 @@
       font-size: 0.84rem;
       color: rgba(10,8,20,0.6);
     }
+    /* 手機：leaderboard 改成橫滑 mini card */
     @media (max-width: 768px) {
       .leaderboard-head { display: none; }
-      .leaderboard-row {
-        grid-template-columns: 40px 1fr;
-        gap: 4px 12px;
-        padding: 16px 0;
+      .leaderboard-rows {
+        display: flex;
+        flex-direction: row;
+        gap: 12px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding: 4px 22px 16px;
+        margin: 0 -22px;
+        scrollbar-width: none;
+        scroll-padding-left: 22px;
       }
-      .leaderboard-rank { grid-row: 1 / 3; align-self: start; }
-      .leaderboard-name { grid-column: 2; }
-      .leaderboard-score { grid-column: 2; font-size: 0.84rem; }
-      .leaderboard-school { grid-column: 2; font-size: 0.92rem; }
-      .leaderboard-note { grid-column: 2; }
+      .leaderboard-rows::-webkit-scrollbar { display: none; }
+      .leaderboard-row {
+        flex: 0 0 68%;
+        scroll-snap-align: start;
+        background: #fff;
+        border: 1px solid rgba(0,0,0,0.12);
+        grid-template-columns: 1fr;
+        gap: 8px;
+        padding: 18px 18px 16px;
+        align-items: stretch;
+      }
+      .leaderboard-rank {
+        font-size: 1.4rem;
+        color: var(--orange-dark);
+        padding-bottom: 8px;
+        border-bottom: 1px dashed rgba(0,0,0,0.12);
+      }
+      .leaderboard-name { font-size: 1.2rem; }
+      .leaderboard-score { font-size: 0.82rem; }
+      .leaderboard-school { font-size: 0.86rem; }
+      .leaderboard-note { font-size: 0.78rem; }
     }
 
     /* Leaderboard 可擴充：超過 data-collapse-after 筆數時自動摺疊 */
@@ -2100,7 +2143,27 @@
       max-width: 1080px;
       margin: 0 auto;
     }
-    @media (max-width: 768px) { .loot-grid { grid-template-columns: 1fr; } }
+    /* 手機：6 LOOT 卡改橫滑 */
+    @media (max-width: 768px) {
+      .loot-grid {
+        display: flex;
+        grid-template-columns: none;
+        flex-direction: row;
+        gap: 14px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding: 6px 22px 18px;
+        margin: 0 -22px;
+        scrollbar-width: none;
+        scroll-padding-left: 22px;
+        max-width: none;
+      }
+      .loot-grid::-webkit-scrollbar { display: none; }
+      .loot-grid .loot-card {
+        flex: 0 0 78%;
+        scroll-snap-align: start;
+      }
+    }
     .loot-card {
       background: var(--bg-dark-2);
       border: 1px solid var(--line-dim);
