@@ -435,6 +435,30 @@
       color: var(--orange);
       text-shadow: 0 0 24px var(--orange-glow), 0 0 48px var(--orange-glow);
     }
+    .hero-title-en {
+      display: inline-block;
+      margin-left: 18px;
+      padding: 4px 14px;
+      vertical-align: middle;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(0.7rem, 1.3vw, 1.05rem);
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--orange);
+      border: 1px solid var(--orange);
+      background: var(--orange-soft);
+      box-shadow: 0 0 16px var(--orange-glow);
+      text-shadow: none;
+      text-transform: uppercase;
+      line-height: 1;
+      transform: translateY(-12px);
+    }
+    @media (max-width: 768px) {
+      .hero-title-en { display: block; margin: 12px 0 0; transform: none; width: max-content; }
+    }
+    @media (max-width: 991px) {
+      .hero-title-en { margin-left: auto; margin-right: auto; }
+    }
 
     .hero-sub {
       font-size: clamp(1.1rem, 1.8vw, 1.42rem);
@@ -2595,7 +2619,7 @@
         <h1 class="hero-title">
           讓你的孩子，<br>
           成為下一位<br>
-          <span class="glow">Contestant</span>
+          <span class="glow">選手</span><span class="hero-title-en">/ CONTESTANT</span>
         </h1>
 
         <p class="hero-sub">
