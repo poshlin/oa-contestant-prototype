@@ -2266,6 +2266,70 @@
     }
     .leaderboard-footnote strong { color: var(--orange-dark); }
 
+    /* ── 09 章：團隊戰戰績（CodeWars）── */
+    .team-battle {
+      max-width: 1080px;
+      margin: 56px auto 0;
+      padding: 32px 36px;
+      background: #fff;
+      border: 1px solid rgba(0,0,0,0.15);
+      border-left: 6px solid var(--orange);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+    @media (max-width: 768px) {
+      .team-battle { padding: 24px 22px; margin-top: 40px; }
+    }
+    .team-battle-head { margin-bottom: 20px; }
+    .team-battle-eyebrow {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      letter-spacing: 2.5px;
+      color: var(--orange-dark);
+      font-weight: 700;
+      margin-bottom: 10px;
+      padding: 4px 10px;
+      background: rgba(255,163,0,0.12);
+      border: 1px solid var(--orange);
+      text-transform: uppercase;
+    }
+    .team-battle-title {
+      font-size: clamp(1.3rem, 2.4vw, 1.8rem);
+      font-weight: 900;
+      color: var(--bg-dark);
+      margin: 0 0 10px;
+      letter-spacing: -0.3px;
+      line-height: 1.3;
+    }
+    .team-battle-sub {
+      font-size: 0.94rem;
+      color: rgba(10,8,20,0.7);
+      margin: 0;
+      line-height: 1.55;
+    }
+    .team-battle-sub strong { color: var(--orange-dark); font-weight: 700; }
+    .team-battle-roster {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-top: 18px;
+      border-top: 1px dashed rgba(0,0,0,0.12);
+    }
+    .team-member {
+      display: inline-block;
+      padding: 6px 14px;
+      background: var(--bg-dark);
+      color: #fff;
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      border-radius: 2px;
+    }
+    @media (max-width: 480px) {
+      .team-member { font-size: 0.86rem; padding: 5px 12px; }
+    }
+
     /* ══════════════════════════════════════
        10 / LOOT TABLE
     ══════════════════════════════════════ */
@@ -3843,12 +3907,121 @@
             <div class="leaderboard-school empty">—</div>
             <div class="leaderboard-note">資訊能力競賽校內第一</div>
           </div>
+          <!-- ─── 2024 新增戰績（13 位）─── -->
+          <div class="leaderboard-row">
+            <div class="leaderboard-rank">#11</div>
+            <div class="leaderboard-name">李O霆</div>
+            <div class="leaderboard-score">識讀 4 / 實作 5</div>
+            <div class="leaderboard-school empty">—</div>
+            <div class="leaderboard-note"><strong>實作 5 級滿分（360 分）</strong></div>
+          </div>
+          <div class="leaderboard-row">
+            <div class="leaderboard-rank">#12</div>
+            <div class="leaderboard-name">林O騰</div>
+            <div class="leaderboard-score">識讀 4 / 實作 4</div>
+            <div class="leaderboard-school empty">—</div>
+            <div class="leaderboard-note">CodeWars 隊員</div>
+          </div>
+          <div class="leaderboard-row">
+            <div class="leaderboard-rank">#13</div>
+            <div class="leaderboard-name">張O瑜</div>
+            <div class="leaderboard-score">識讀 4 / 實作 3</div>
+            <div class="leaderboard-school empty">—</div>
+            <div class="leaderboard-note">CodeWars 隊員</div>
+          </div>
+          <div class="leaderboard-row">
+            <div class="leaderboard-rank">#14</div>
+            <div class="leaderboard-name">羅O威</div>
+            <div class="leaderboard-score">識讀 4 / 實作 3</div>
+            <div class="leaderboard-school empty">—</div>
+            <div class="leaderboard-note">識讀三 → 四、實作二 → 三</div>
+          </div>
+          <div class="leaderboard-row">
+            <div class="leaderboard-rank">#15</div>
+            <div class="leaderboard-name">何O志</div>
+            <div class="leaderboard-score">識讀 4 / 實作 3</div>
+            <div class="leaderboard-school empty">—</div>
+            <div class="leaderboard-note">半年從零到識讀四</div>
+          </div>
+          <div class="leaderboard-row">
+            <div class="leaderboard-rank">#16</div>
+            <div class="leaderboard-name">林O鎧</div>
+            <div class="leaderboard-score">識讀 4 / 實作 3</div>
+            <div class="leaderboard-school empty">—</div>
+            <div class="leaderboard-note">—</div>
+          </div>
+          <div class="leaderboard-row">
+            <div class="leaderboard-rank">#17</div>
+            <div class="leaderboard-name">許O芸</div>
+            <div class="leaderboard-score">識讀 4 / 實作 3</div>
+            <div class="leaderboard-school empty">—</div>
+            <div class="leaderboard-note">CodeWars 隊員</div>
+          </div>
+          <div class="leaderboard-row">
+            <div class="leaderboard-rank">#18</div>
+            <div class="leaderboard-name">巫O嶔</div>
+            <div class="leaderboard-score">識讀 3 / 實作 3</div>
+            <div class="leaderboard-school empty">—</div>
+            <div class="leaderboard-note">—</div>
+          </div>
+          <div class="leaderboard-row">
+            <div class="leaderboard-rank">#19</div>
+            <div class="leaderboard-name">劉O旺</div>
+            <div class="leaderboard-score">識讀 4 / 實作 3</div>
+            <div class="leaderboard-school empty">—</div>
+            <div class="leaderboard-note">CodeWars 隊員</div>
+          </div>
+          <div class="leaderboard-row">
+            <div class="leaderboard-rank">#20</div>
+            <div class="leaderboard-name">張O洋</div>
+            <div class="leaderboard-score">識讀 4 / 實作 3</div>
+            <div class="leaderboard-school empty">—</div>
+            <div class="leaderboard-note">識讀二 → 四</div>
+          </div>
+          <div class="leaderboard-row">
+            <div class="leaderboard-rank">#21</div>
+            <div class="leaderboard-name">陳O安</div>
+            <div class="leaderboard-score">識讀 4 / 實作 2</div>
+            <div class="leaderboard-school empty">—</div>
+            <div class="leaderboard-note">CodeWars 隊員</div>
+          </div>
+          <div class="leaderboard-row">
+            <div class="leaderboard-rank">#22</div>
+            <div class="leaderboard-name">郭O誠</div>
+            <div class="leaderboard-score">識讀 2 / 實作 2</div>
+            <div class="leaderboard-school empty">—</div>
+            <div class="leaderboard-note">—</div>
+          </div>
+          <div class="leaderboard-row">
+            <div class="leaderboard-rank">#23</div>
+            <div class="leaderboard-name">鄭O嶸</div>
+            <div class="leaderboard-score">識讀 3 / 實作 2</div>
+            <div class="leaderboard-school empty">—</div>
+            <div class="leaderboard-note">—</div>
+          </div>
         </div>
       </div>
 
       <p class="leaderboard-footnote">
-        ▸ 以上為精選歷屆通關者紀錄，<strong>更多選手戰績持續累積中</strong>。
+        ▸ 截至 2024 累積<strong> 23 位通關者</strong>戰績紀錄，<strong>更多選手持續累積中</strong>。
       </p>
+
+      <!-- 團隊戰戰績：CodeWars -->
+      <div class="team-battle">
+        <div class="team-battle-head">
+          <span class="team-battle-eyebrow">▸ TEAM BATTLE · 團隊戰戰績</span>
+          <h3 class="team-battle-title">CodeWars 全國程式競賽 — 第 17 名</h3>
+          <p class="team-battle-sub">全國 50+ 組隊伍角逐，橘蘋選手班 <strong>6 人隊</strong>拿下前三分之一強。</p>
+        </div>
+        <div class="team-battle-roster">
+          <span class="team-member">林O騰</span>
+          <span class="team-member">劉O旺</span>
+          <span class="team-member">陳O安</span>
+          <span class="team-member">許O芸</span>
+          <span class="team-member">張O瑜</span>
+          <span class="team-member">彭O宥</span>
+        </div>
+      </div>
     </div>
   </section>
 
