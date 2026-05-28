@@ -2534,7 +2534,31 @@
       align-items: baseline;
       cursor: pointer;
     }
-    @media (max-width: 768px) { .mb-q { grid-template-columns: 56px 1fr 24px; gap: 12px; } }
+    /* 手機：FILE.NN 換行到題目上方，避免橫向擠壓 */
+    @media (max-width: 768px) {
+      .mb-q {
+        grid-template-columns: 1fr 28px;
+        grid-template-rows: auto auto;
+        gap: 6px 12px;
+        align-items: center;
+      }
+      .mb-q-num {
+        grid-column: 1 / -1;
+        grid-row: 1;
+        font-size: 0.7rem;
+        letter-spacing: 1.5px;
+        margin-bottom: 2px;
+      }
+      .mb-q-text {
+        grid-column: 1;
+        grid-row: 2;
+      }
+      .mb-q-toggle {
+        grid-column: 2;
+        grid-row: 2;
+        align-self: center;
+      }
+    }
     .mb-q-num {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.84rem;
@@ -2549,7 +2573,7 @@
       line-height: 1.4;
       letter-spacing: -0.2px;
     }
-    @media (max-width: 768px) { .mb-q-text { font-size: 1.02rem; } }
+    @media (max-width: 768px) { .mb-q-text { font-size: 1.02rem; line-height: 1.45; } }
     .mb-q-toggle {
       font-family: 'JetBrains Mono', monospace;
       font-size: 1.4rem;
@@ -2566,7 +2590,11 @@
       overflow: hidden;
       transition: max-height 0.4s ease, margin-top 0.3s ease;
     }
-    @media (max-width: 768px) { .mb-a { grid-template-columns: 56px 1fr; gap: 12px; } }
+    /* 手機：答案區也改單欄，與 FILE.NN 換行的題目對齊 */
+    @media (max-width: 768px) {
+      .mb-a { grid-template-columns: 1fr; gap: 0; }
+      .mb-a-inner { grid-column: 1; padding-right: 0; }
+    }
     .mb-item.open .mb-a { max-height: 800px; margin-top: 18px; }
     .mb-a-inner {
       grid-column: 2;
