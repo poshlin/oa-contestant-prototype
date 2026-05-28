@@ -1208,6 +1208,120 @@
       flex-wrap: wrap;
     }
 
+    /* ── 04 章：綠茶老師 YouTube 介紹影片（facade 模式） ── */
+    .mentor-video-card {
+      max-width: 880px;
+      margin: 64px auto 0;
+    }
+    .mentor-video-head {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .mentor-video-eyebrow {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      letter-spacing: 2.5px;
+      color: var(--orange);
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 12px;
+      padding: 5px 14px;
+      background: var(--orange-soft);
+      border: 1px solid var(--orange);
+    }
+    .mentor-video-title {
+      font-size: clamp(1.6rem, 3.2vw, 2.2rem);
+      font-weight: 900;
+      color: var(--text-light);
+      margin: 0 0 12px;
+      letter-spacing: -0.5px;
+      line-height: 1.25;
+    }
+    .mentor-video-title .accent { color: var(--orange); text-shadow: 0 0 24px var(--orange-glow); }
+    .mentor-video-desc {
+      font-size: 0.98rem;
+      color: var(--text-mute);
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    .yt-facade {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: var(--bg-dark);
+      border: 1px solid var(--line-bright);
+      cursor: pointer;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,163,0,0.15);
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+      outline: 0;
+    }
+    .yt-facade:hover,
+    .yt-facade:focus-visible {
+      box-shadow: 0 12px 48px rgba(0,0,0,0.6), 0 0 0 1px var(--orange), 0 0 32px var(--orange-glow);
+      transform: translateY(-2px);
+    }
+    .yt-facade-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+    .yt-facade:hover .yt-facade-thumb { transform: scale(1.04); }
+    .yt-facade::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.55) 100%),
+        linear-gradient(180deg, transparent 50%, rgba(10,8,20,0.7) 100%);
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .yt-facade:hover::after { opacity: 0.75; }
+    .yt-facade-play {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s ease, filter 0.3s ease;
+      filter: drop-shadow(0 0 16px rgba(255,0,0,0.35));
+      pointer-events: none;
+    }
+    .yt-facade:hover .yt-facade-play,
+    .yt-facade:focus-visible .yt-facade-play {
+      transform: translate(-50%, -50%) scale(1.12);
+      filter: drop-shadow(0 0 28px rgba(255,0,0,0.7));
+    }
+    .yt-facade-caption {
+      position: absolute;
+      left: 18px; bottom: 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: #fff;
+      letter-spacing: 2px;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.8);
+      text-transform: uppercase;
+      pointer-events: none;
+      font-weight: 700;
+    }
+    .yt-facade iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      border: 0;
+      display: block;
+    }
+    @media (max-width: 768px) {
+      .mentor-video-card { margin-top: 48px; }
+      .yt-facade-caption { font-size: 0.66rem; left: 12px; bottom: 10px; }
+    }
+
     /* ══════════════════════════════════════
        05 / SKILL TREE
     ══════════════════════════════════════ */
@@ -2693,9 +2807,9 @@
           <p class="guild-rule-body">解題後撰寫 HackMD 文章，訓練 code review、邏輯表達。這些文章就是孩子日後申請資科系的硬實力證明。</p>
         </div>
         <div class="guild-rule">
-          <div class="guild-rule-num">▸ RULE 04 · ELIMINATION</div>
-          <h4 class="guild-rule-title">嚴格的淘汰機制<br>維持公會訓練強度</h4>
-          <p class="guild-rule-body">連續三次缺課、累積請假五堂、三個月未參賽，建議退出。看似嚴格，但這是為了保護其他選手的訓練品質。</p>
+          <div class="guild-rule-num">▸ RULE 04 · MAKE-UP</div>
+          <h4 class="guild-rule-title">2 次補課機會<br>缺一次自動順延一週</h4>
+          <p class="guild-rule-body">每期 15 週，提供 2 次完整補課。請假 1 次 → 該期順延 1 週；請假 2 次 → 順延 2 週。確保每位選手都能完整跟上進度，不讓任何一堂課白白消失。</p>
         </div>
       </div>
     </div>
@@ -2749,6 +2863,25 @@
             <div class="mentor-section-label">▸ PHILOSOPHY · 教學理念</div>
             <p class="body-text" style="margin: 0; color: var(--text-glow);">「老師個人能力強不算強，能培育學生讓更多學生變強，<strong>打開競賽的窄門</strong>，這才是真正的教練。」</p>
           </div>
+        </div>
+      </div>
+
+      <!-- 綠茶老師 YouTube 介紹影片（facade 模式） -->
+      <div class="mentor-video-card">
+        <div class="mentor-video-head">
+          <span class="mentor-video-eyebrow">▸ INTRO VIDEO · 親自介紹</span>
+          <h3 class="mentor-video-title">看老師<span class="accent">親口告訴你</span>：選手班怎麼帶？</h3>
+          <p class="mentor-video-desc">綠茶老師親自說明選手班的訓練方式、教學風格、與一般程式課的根本差異。</p>
+        </div>
+        <div class="yt-facade" data-yt-id="NhBIeeThNhY" role="button" tabindex="0" aria-label="播放綠茶老師介紹選手班影片">
+          <img class="yt-facade-thumb" src="https://img.youtube.com/vi/NhBIeeThNhY/maxresdefault.jpg" alt="綠茶老師親口介紹選手班 - 點擊播放" loading="lazy" onerror="this.src='https://img.youtube.com/vi/NhBIeeThNhY/hqdefault.jpg'">
+          <span class="yt-facade-play" aria-hidden="true">
+            <svg width="80" height="56" viewBox="0 0 68 48">
+              <path d="M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,0.13,34,0,34,0S12.21,0.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z" fill="#FF0000"/>
+              <polygon points="45,24 27,14 27,34" fill="#fff"/>
+            </svg>
+          </span>
+          <span class="yt-facade-caption">▸ CLICK TO PLAY · 約 3 分鐘</span>
         </div>
       </div>
 
@@ -3507,12 +3640,14 @@
         <li class="mb-item" data-cat="signup">
           <div class="mb-q" onclick="this.parentElement.classList.toggle('open')">
             <span class="mb-q-num">FILE.11</span>
-            <span class="mb-q-text">缺課可以補課嗎？「淘汰機制」是什麼？</span>
+            <span class="mb-q-text">缺課可以補課嗎？課程進度怎麼安排？</span>
             <span class="mb-q-toggle">+</span>
           </div>
           <div class="mb-a"><div class="mb-a-inner">
-            <strong>有提供補課影片</strong>。但選手班為維持訓練強度，設計了 3 條淘汰機制：<br>
-            ① <strong>連續三次缺課</strong>、② <strong>累積請假五堂以上</strong>、③ <strong>三個月內未參加任何競賽</strong>，三項任一條件成立即建議退出。這是為了保護其他學生的訓練品質與時間。若孩子有特殊狀況可與班主任 Vina 老師討論。
+            <strong>提供 2 次完整補課機會</strong>。每期 15 週為 1 個訓練週期：<br>
+            ① <strong>請假 1 次</strong> → 該期自動<strong>順延 1 週</strong>（變 16 週）<br>
+            ② <strong>請假 2 次</strong> → 該期自動<strong>順延 2 週</strong>（變 17 週）<br>
+            這樣設計是為了確保每位選手都能完整跟上進度，<strong>不讓任何一堂課白白消失</strong>。若超過 2 次缺課或有特殊狀況，請與班主任 Vina 老師討論個別安排。
           </div></div>
         </li>
 
@@ -3764,6 +3899,34 @@
           wrap.setAttribute('data-active', cat);
           chips.forEach(c => c.classList.remove('active'));
           chip.classList.add('active');
+        });
+      });
+    })();
+
+    /* ── YouTube facade（點擊才載入 iframe，加速首屏） ── */
+    (function initYouTubeFacades() {
+      const facades = document.querySelectorAll('.yt-facade[data-yt-id]');
+      if (!facades.length) return;
+      facades.forEach(facade => {
+        const activate = () => {
+          if (facade.dataset.loaded === '1') return;
+          const id = facade.dataset.ytId;
+          if (!id) return;
+          facade.dataset.loaded = '1';
+          const iframe = document.createElement('iframe');
+          iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`;
+          iframe.title = facade.getAttribute('aria-label') || 'YouTube video';
+          iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+          iframe.allowFullscreen = true;
+          facade.innerHTML = '';
+          facade.appendChild(iframe);
+        };
+        facade.addEventListener('click', activate);
+        facade.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            activate();
+          }
         });
       });
     })();
