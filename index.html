@@ -608,6 +608,8 @@
       align-items: center;
       justify-content: center;
       gap: 4px;
+      padding: 22% 14%;
+      box-sizing: border-box;
     }
     .hero-emblem-lv-label {
       font-family: 'JetBrains Mono', monospace;
@@ -738,9 +740,10 @@
         padding: 24px;
         background: var(--bg-dark-2);
         border: 1px solid var(--line-bright);
-        border-bottom: 1px solid var(--line-bright);
         gap: 16px;
       }
+      /* 覆蓋桌機 last-child border-bottom: none，手機需保留完整底邊 */
+      .struggle-item:last-child { border-bottom: 1px solid var(--line-bright); }
       .struggle-mark { margin-bottom: 4px; }
       .struggle-mark-num { font-size: 1.8rem; display: inline; margin-right: 8px; }
     }
@@ -1442,6 +1445,64 @@
     /* ══════════════════════════════════════
        05 / SKILL TREE — 1 CORE + 4 SUPPORT
     ══════════════════════════════════════ */
+
+    /* SKILL 章節整片淡背景（不重疊到卡片內文） */
+    #skilltree { position: relative; overflow: hidden; }
+    #skilltree::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('assets/G-skills.png') center / cover no-repeat;
+      opacity: 0.10;
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(2px) saturate(0.9);
+    }
+    #skilltree > .container-wide { position: relative; z-index: 1; }
+
+    /* SKILL banner：完整展示原始 5 hex 美術 */
+    .skill-banner {
+      max-width: 1080px;
+      margin: 0 0 40px;
+      position: relative;
+      border: 1px solid var(--line-bright);
+      background: var(--bg-dark);
+      overflow: hidden;
+      aspect-ratio: 16/9;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,163,0,0.15);
+    }
+    .skill-banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: brightness(1.05) saturate(1.08);
+    }
+    .skill-banner::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 55%, rgba(10,8,20,0.7) 100%);
+      pointer-events: none;
+    }
+    .skill-banner-caption {
+      position: absolute;
+      bottom: 14px;
+      left: 22px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      letter-spacing: 2.5px;
+      color: var(--gold);
+      text-transform: uppercase;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.85);
+      font-weight: 700;
+      z-index: 2;
+    }
+    @media (max-width: 768px) {
+      .skill-banner { aspect-ratio: 16/9; margin-bottom: 28px; }
+      .skill-banner-caption { font-size: 0.66rem; letter-spacing: 1.5px; bottom: 10px; left: 16px; }
+    }
+
     .skill-tree {
       max-width: 1080px;
       margin: 0 auto;
@@ -2994,13 +3055,16 @@
       <div class="chapter-header">
         <span class="chapter-num">02 / 12</span>
         <span class="chapter-name">CHAMPION SPOTLIGHT</span>
-        <span class="chapter-tag">指揮官介紹</span>
+        <span class="chapter-tag">玩家檔案</span>
       </div>
 
-      <h2 class="epic-headline" style="margin-bottom: 40px;">
-        他已經<span class="accent">通關了</span>。<br>
-        Player profile, 林鼎陽。
+      <h2 class="epic-headline" style="margin-bottom: 16px;">
+        <span class="accent">林鼎陽</span>，已經通關了。
       </h2>
+      <p class="epic-lede" style="margin-bottom: 40px;">
+        APCS 從 2 級分推到滿級分、進入頂尖資工系所。<br>
+        下方是他的完整<strong>玩家檔案</strong>。
+      </p>
 
       <div class="champion-card">
         <div class="champion-card-head">
@@ -3253,10 +3317,16 @@
         每期 15 週，解鎖<br>
         <span class="accent">5 大核心技能</span>。
       </h2>
-      <p class="epic-lede" style="margin-bottom: 56px;">
+      <p class="epic-lede" style="margin-bottom: 40px;">
         1 個核心技能（應用演算法）+ 4 個支援技能。<br>
         <strong>應用演算法是 APCS 級分差距的真正關鍵</strong>，其餘 4 項都是為了支撐它。
       </p>
+
+      <!-- SKILL banner：完整展示 5 大技能視覺化 -->
+      <div class="skill-banner" aria-hidden="true">
+        <img src="assets/G-skills.png" alt="5 大核心技能視覺化星圖" loading="lazy">
+        <span class="skill-banner-caption">▸ 5 SKILLS · CONSTELLATION</span>
+      </div>
 
       <div class="skill-tree">
         <!-- CORE 大卡：金色發光，最重要 -->
