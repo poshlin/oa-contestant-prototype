@@ -604,37 +604,26 @@
       clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
       background: var(--bg-dark);
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 4px;
-      padding: 22% 14%;
-      box-sizing: border-box;
-    }
-    .hero-emblem-lv-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.74rem;
-      letter-spacing: 3px;
-      color: var(--orange);
-      font-weight: 700;
-      text-transform: uppercase;
     }
     .hero-emblem-lv-num {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 3.4rem;
+      font-size: clamp(2rem, 5vw, 3.2rem);
       font-weight: 700;
       color: var(--text-light);
       line-height: 1;
       letter-spacing: -1px;
       text-shadow: 0 0 24px var(--orange-glow);
+      display: inline-flex;
+      align-items: baseline;
+      gap: 4px;
     }
-    .hero-emblem-lv-sub {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.66rem;
-      letter-spacing: 2px;
-      color: var(--text-mute);
-      text-transform: uppercase;
-      margin-top: 4px;
+    .hero-emblem-lv-prefix {
+      font-size: 0.55em;
+      color: var(--orange);
+      letter-spacing: 1px;
+      font-weight: 700;
     }
 
     /* 浮動標籤 */
@@ -2991,9 +2980,7 @@
         </div>
         <div class="hero-emblem-hex">
           <div class="hero-emblem-hex-inner">
-            <div class="hero-emblem-lv-label">LEVEL</div>
-            <div class="hero-emblem-lv-num">??</div>
-            <div class="hero-emblem-lv-sub">YOUR CHILD</div>
+            <div class="hero-emblem-lv-num"><span class="hero-emblem-lv-prefix">LV.</span>??</div>
           </div>
         </div>
         <span class="hero-emblem-tag t1">▸ READY</span>
