@@ -1,0 +1,3772 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>橘蘋選手班 ｜ THE QUEST — 一場 15 週的程式英雄修煉</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ══════════════════════════════════════
+       橘蘋選手班 v4 ｜ RPG 英雄敘事
+       — 90% 暗紫黑底，10% 米白呼吸（Champions / FAQ）
+       — RPG 隱喻：召喚 → 修煉 → BOSS → 戰利品 → 加入旅程
+    ══════════════════════════════════════ */
+    :root {
+      /* 暗夜奇幻底色 */
+      --bg-dark:     #0A0814;
+      --bg-dark-2:   #14102A;
+      --bg-dark-3:   #1F1838;
+
+      /* 米白呼吸區 */
+      --bg-light:    #FAF8F1;
+      --bg-light-2:  #F1EEE3;
+
+      /* 橘蘋品牌 */
+      --orange:      #FFA300;
+      --orange-2:    #FFB733;
+      --orange-dark: #C77E00;
+      --orange-glow: rgba(255,163,0,0.6);
+      --orange-soft: rgba(255,163,0,0.12);
+
+      /* 配色 */
+      --gold:        #FFD700;        /* LEGENDARY tier */
+      --red:         #FF4D5E;        /* warn / danger / EPIC */
+      --teal:        #00E5C9;        /* RARE / 副 accent */
+      --purple:      #B679FF;        /* mystic accent */
+
+      /* 文字 */
+      --text-light:  #FFFFFF;
+      --text-mute:   #A8A4B8;
+      --text-dim:    #6E6A82;
+      --text-glow:   rgba(255,255,255,0.92);
+
+      /* 線條 / 邊框 */
+      --line-dim:    rgba(255,163,0,0.18);
+      --line-bright: rgba(255,163,0,0.5);
+      --line-soft:   rgba(255,255,255,0.08);
+    }
+
+    html { font-size: 18px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    @media (max-width: 768px) { html { font-size: 16px; } }
+    button { font-family: inherit; }
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 1rem;
+      color: var(--text-glow);
+      background: var(--bg-dark);
+      margin: 0;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── 字體層級 ── */
+    .mono { font-family: 'JetBrains Mono', 'SF Mono', 'Monaco', monospace; }
+
+    .hud-label {
+      font-family: 'JetBrains Mono', 'SF Mono', monospace;
+      font-size: 0.74rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--orange);
+      font-weight: 600;
+    }
+    .hud-meta {
+      font-family: 'JetBrains Mono', 'SF Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 2.5px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+    /* ── 容器 ── */
+    .container-wide { max-width: 1320px; margin: 0 auto; padding: 0 48px; }
+    .container-narrow { max-width: 880px; margin: 0 auto; padding: 0 40px; }
+    @media (max-width: 768px) {
+      .container-wide, .container-narrow { padding: 0 22px; }
+    }
+
+    /* ── 章節基底 ── */
+    .chapter {
+      padding: 140px 0;
+      position: relative;
+    }
+    @media (max-width: 768px) { .chapter { padding: 80px 0; } }
+    .chapter-light {
+      background: var(--bg-light);
+      color: var(--bg-dark);
+    }
+
+    /* 章節標題 header */
+    .chapter-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 64px;
+      padding-bottom: 22px;
+      border-bottom: 1px solid var(--line-dim);
+    }
+    .chapter-light .chapter-header { border-bottom-color: rgba(0,0,0,0.15); }
+    .chapter-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.86rem;
+      letter-spacing: 3px;
+      color: var(--orange);
+      font-weight: 700;
+      text-shadow: 0 0 12px var(--orange-glow);
+    }
+    .chapter-light .chapter-num { text-shadow: none; }
+    .chapter-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1rem;
+      letter-spacing: 4px;
+      color: var(--text-glow);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .chapter-light .chapter-name { color: var(--bg-dark); }
+    .chapter-tag {
+      margin-left: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+    @media (max-width: 768px) {
+      .chapter-header { flex-wrap: wrap; gap: 10px; margin-bottom: 40px; }
+      .chapter-tag { margin-left: 0; width: 100%; margin-top: 4px; }
+    }
+
+    /* 章節 banner */
+    .chapter-banner {
+      width: 100%;
+      aspect-ratio: 16/6;
+      max-height: 280px;
+      margin: 0 0 40px;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid var(--line-bright);
+      border-bottom: 1px solid var(--line-bright);
+    }
+    .chapter-banner::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(10,8,20,0.45) 0%, rgba(10,8,20,0.15) 50%, rgba(10,8,20,0.85) 100%);
+      pointer-events: none;
+    }
+    .chapter-light .chapter-banner {
+      border-top-color: rgba(0,0,0,0.18);
+      border-bottom-color: rgba(0,0,0,0.18);
+    }
+    .chapter-light .chapter-banner::after {
+      background: linear-gradient(180deg, rgba(250,248,241,0.20) 0%, rgba(250,248,241,0.05) 45%, rgba(250,248,241,0.92) 100%);
+    }
+    .chapter-banner.banner-battle { background-image: url('assets/H1-banner-battle.png'); }
+    .chapter-banner.banner-guild { background-image: url('assets/H2-banner-guild.png'); }
+    @media (max-width: 768px) {
+      .chapter-banner { aspect-ratio: 16/9; margin-bottom: 28px; }
+    }
+
+    /* 旅程地圖 */
+    .journey-map {
+      max-width: 1080px;
+      margin: 0 auto 56px;
+      position: relative;
+      border: 1px solid var(--line-bright);
+      background: var(--bg-dark-2);
+      overflow: hidden;
+    }
+    .journey-map img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: brightness(1.05) saturate(1.05);
+    }
+    .journey-map-caption {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 20px 28px 22px;
+      background: linear-gradient(180deg, transparent 0%, rgba(10,8,20,0.92) 60%);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .journey-map-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 2.5px;
+      color: var(--gold);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .journey-map-text {
+      font-size: 0.96rem;
+      color: var(--text-light);
+      margin: 0;
+      line-height: 1.55;
+      max-width: 760px;
+    }
+    .journey-map-text strong { color: var(--gold); font-weight: 700; }
+    @media (max-width: 768px) {
+      .journey-map-caption { position: static; padding: 16px 20px 20px; background: var(--bg-dark); }
+      .journey-map-text { font-size: 0.92rem; }
+    }
+
+    /* 章節大標 */
+    .epic-headline {
+      font-size: clamp(2.6rem, 6vw, 5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -1.8px;
+      color: var(--text-glow);
+      margin: 0 0 24px;
+    }
+    .chapter-light .epic-headline { color: var(--bg-dark); }
+    .epic-headline .accent { color: var(--orange); text-shadow: 0 0 24px var(--orange-glow); }
+    .chapter-light .epic-headline .accent { text-shadow: none; }
+
+    /* 副標 */
+    .epic-lede {
+      font-size: clamp(1.18rem, 2vw, 1.55rem);
+      line-height: 1.55;
+      color: var(--text-mute);
+      font-weight: 400;
+      max-width: 760px;
+      letter-spacing: -0.1px;
+    }
+    .epic-lede strong { color: var(--text-light); font-weight: 700; }
+    .chapter-light .epic-lede { color: rgba(10,8,20,0.7); }
+    .chapter-light .epic-lede strong { color: var(--bg-dark); }
+
+    /* 內文 */
+    .body-text {
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: var(--text-mute);
+      font-weight: 400;
+    }
+    .body-text strong { color: var(--text-light); font-weight: 700; }
+    .chapter-light .body-text { color: rgba(10,8,20,0.78); }
+    .chapter-light .body-text strong { color: var(--bg-dark); }
+
+    /* HUD 角落框（cyber corners） */
+    .corners {
+      position: relative;
+    }
+    .corners::before,
+    .corners::after {
+      content: '';
+      position: absolute;
+      width: 22px; height: 22px;
+      border: 2px solid var(--orange);
+      pointer-events: none;
+    }
+    .corners::before { top: -2px; left: -2px; border-right: none; border-bottom: none; }
+    .corners::after { bottom: -2px; right: -2px; border-left: none; border-top: none; }
+
+    .corners-4 {
+      position: relative;
+    }
+    .corners-4::before, .corners-4::after,
+    .corners-4 .corner-tr, .corners-4 .corner-bl {
+      content: '';
+      position: absolute;
+      width: 18px; height: 18px;
+      border: 2px solid var(--orange);
+      pointer-events: none;
+    }
+    .corners-4::before { top: -2px; left: -2px; border-right: none; border-bottom: none; }
+    .corners-4::after { top: -2px; right: -2px; border-left: none; border-bottom: none; }
+    .corners-4 .corner-bl { bottom: -2px; left: -2px; border-right: none; border-top: none; }
+    .corners-4 .corner-tr { bottom: -2px; right: -2px; border-left: none; border-top: none; }
+
+    /* HUD chip */
+    .hud-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      background: var(--orange-soft);
+      border: 1px solid var(--line-bright);
+      color: var(--orange);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    /* Tier ribbon */
+    .tier {
+      display: inline-block;
+      padding: 4px 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 2px;
+      font-weight: 700;
+      text-transform: uppercase;
+      clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+    }
+    .tier-legendary { background: var(--gold); color: #6E5500; box-shadow: 0 0 16px rgba(255,215,0,0.5); }
+    .tier-epic { background: var(--purple); color: #fff; }
+    .tier-rare { background: var(--teal); color: #003E37; }
+    .tier-common { background: var(--text-dim); color: var(--bg-dark); }
+
+    /* 粒子背景（多 layer） */
+    .stars-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.7;
+      background-image:
+        radial-gradient(1px 1px at 18% 22%, var(--text-glow), transparent),
+        radial-gradient(1px 1px at 78% 18%, var(--orange), transparent),
+        radial-gradient(1px 1px at 33% 65%, var(--text-glow), transparent),
+        radial-gradient(2px 2px at 85% 75%, var(--orange), transparent),
+        radial-gradient(1px 1px at 55% 38%, var(--purple), transparent),
+        radial-gradient(1px 1px at 12% 88%, var(--text-glow), transparent),
+        radial-gradient(2px 2px at 62% 12%, var(--gold), transparent),
+        radial-gradient(1px 1px at 92% 55%, var(--text-glow), transparent);
+      background-size: 600px 500px;
+      animation: starsDrift 60s linear infinite;
+    }
+    @keyframes starsDrift {
+      from { background-position: 0 0; }
+      to { background-position: -600px -500px; }
+    }
+
+    /* 進度條 */
+    .read-progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 2px;
+      width: 0;
+      background: linear-gradient(90deg, var(--orange), var(--gold));
+      box-shadow: 0 0 12px var(--orange-glow);
+      z-index: 9999;
+      transition: width 0.05s linear;
+    }
+
+    /* ══════════════════════════════════════
+       MAST（暗夜頁首）
+    ══════════════════════════════════════ */
+    .masthead {
+      background: var(--bg-dark);
+      border-bottom: 1px solid var(--line-dim);
+      padding: 16px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+    .masthead-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 48px;
+    }
+    @media (max-width: 768px) { .masthead-inner { padding: 0 22px; } }
+    .masthead-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+    }
+    .masthead-logo {
+      height: 30px;
+      filter: brightness(1.1);
+    }
+    .masthead-meta {
+      display: none;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      letter-spacing: 2.5px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      gap: 16px;
+      align-items: center;
+    }
+    @media (min-width: 1024px) { .masthead-meta { display: inline-flex; } }
+    .masthead-meta-sep { color: var(--orange); }
+    .masthead-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 22px;
+      background: transparent;
+      color: var(--orange);
+      font-size: 0.84rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      border: 1px solid var(--orange);
+      cursor: pointer;
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+      transition: all 0.2s;
+    }
+    .masthead-cta:hover {
+      background: var(--orange);
+      color: var(--bg-dark);
+      box-shadow: 0 0 24px var(--orange-glow);
+    }
+    @media (max-width: 768px) {
+      .masthead-cta { padding: 8px 14px; font-size: 0.74rem; }
+      .masthead-cta-text { display: none; }
+    }
+
+    /* ══════════════════════════════════════
+       PROLOGUE / HERO
+    ══════════════════════════════════════ */
+    .hero {
+      min-height: calc(100vh - 64px);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      background:
+        linear-gradient(180deg, rgba(10,8,20,0.55) 0%, rgba(10,8,20,0.78) 60%, rgba(10,8,20,0.96) 100%),
+        radial-gradient(ellipse at 70% 30%, rgba(255,163,0,0.18) 0%, transparent 55%),
+        radial-gradient(ellipse at 25% 75%, rgba(182,121,255,0.12) 0%, transparent 55%),
+        url('assets/A-hero-trio.png') center / cover no-repeat,
+        var(--bg-dark);
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(rgba(255,163,0,0.018) 1px, transparent 1px) 0 0 / 60px 60px,
+        linear-gradient(90deg, rgba(255,163,0,0.018) 1px, transparent 1px) 0 0 / 60px 60px;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .hero > * { position: relative; z-index: 2; }
+
+    .hero-main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 80px;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 80px 48px;
+      align-items: center;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+    }
+    @media (max-width: 991px) {
+      .hero-main { grid-template-columns: 1fr; gap: 48px; padding: 60px 22px; text-align: center; }
+    }
+
+    .hero-eyebrow-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      padding: 10px 20px;
+      background: var(--orange-soft);
+      border: 1px solid var(--orange);
+      color: var(--orange);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 3px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 36px;
+      box-shadow: 0 0 24px var(--orange-glow);
+    }
+    .hero-eyebrow-wrap::before { content: '▸'; font-size: 1rem; }
+
+    .hero-title {
+      font-size: clamp(2.8rem, 6.5vw, 5.4rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -2px;
+      color: var(--text-light);
+      margin: 0 0 28px;
+      text-shadow: 0 0 40px rgba(255,255,255,0.15);
+    }
+    .hero-title .glow {
+      color: var(--orange);
+      text-shadow: 0 0 24px var(--orange-glow), 0 0 48px var(--orange-glow);
+    }
+
+    .hero-sub {
+      font-size: clamp(1.1rem, 1.8vw, 1.42rem);
+      line-height: 1.6;
+      color: var(--text-mute);
+      max-width: 580px;
+      margin: 0 0 48px;
+      font-weight: 400;
+    }
+    @media (max-width: 991px) { .hero-sub { margin: 0 auto 48px; } }
+    .hero-sub strong { color: var(--text-light); font-weight: 700; }
+
+    .hero-actions {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    @media (max-width: 991px) { .hero-actions { justify-content: center; } }
+
+    .hero-cta-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      padding: 22px 36px;
+      background: var(--orange);
+      color: var(--bg-dark);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      border: none;
+      cursor: pointer;
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+      transition: all 0.25s;
+      text-decoration: none;
+      box-shadow:
+        0 0 0 1px var(--orange),
+        0 0 32px var(--orange-glow),
+        0 12px 32px rgba(0,0,0,0.4);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-cta-primary::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      transition: left 0.6s;
+    }
+    .hero-cta-primary:hover::before { left: 100%; }
+    .hero-cta-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 0 2px var(--orange), 0 0 48px var(--orange-glow), 0 18px 48px rgba(0,0,0,0.5);
+      color: var(--bg-dark);
+    }
+    .hero-cta-primary .key {
+      font-size: 0.74rem;
+      padding: 4px 8px;
+      background: rgba(0,0,0,0.18);
+      border-radius: 3px;
+      letter-spacing: 1px;
+    }
+
+    .hero-cta-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 22px 4px;
+      color: var(--text-glow);
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-decoration: none;
+      border-bottom: 1px solid var(--text-glow);
+      transition: all 0.2s;
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+    }
+    .hero-cta-secondary:hover {
+      color: var(--orange);
+      border-color: var(--orange);
+    }
+
+    /* Hero 右側：英雄徽章 */
+    .hero-emblem {
+      position: relative;
+      width: 100%;
+      max-width: 460px;
+      aspect-ratio: 1;
+      margin: 0 auto;
+    }
+    .hero-emblem-rings {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .hero-emblem-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1px solid var(--orange);
+      opacity: 0.4;
+      animation: ringRotate 30s linear infinite;
+    }
+    .hero-emblem-ring:nth-child(1) { inset: 4%; border-style: dashed; opacity: 0.5; }
+    .hero-emblem-ring:nth-child(2) { inset: 14%; border-style: solid; opacity: 0.3; animation-duration: 50s; animation-direction: reverse; }
+    .hero-emblem-ring:nth-child(3) {
+      inset: 26%; border-style: solid; border-width: 2px; opacity: 0.6;
+      box-shadow: 0 0 24px var(--orange-glow), inset 0 0 24px var(--orange-glow);
+      animation-duration: 80s;
+    }
+    @keyframes ringRotate {
+      from { transform: rotate(0); }
+      to { transform: rotate(360deg); }
+    }
+    .hero-emblem-hex {
+      position: absolute;
+      inset: 32%;
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      background: linear-gradient(135deg, var(--orange) 0%, var(--orange-dark) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: drop-shadow(0 0 32px var(--orange-glow));
+    }
+    .hero-emblem-hex-inner {
+      width: 92%; height: 92%;
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      background: var(--bg-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+    .hero-emblem-lv-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      letter-spacing: 3px;
+      color: var(--orange);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .hero-emblem-lv-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 3.4rem;
+      font-weight: 700;
+      color: var(--text-light);
+      line-height: 1;
+      letter-spacing: -1px;
+      text-shadow: 0 0 24px var(--orange-glow);
+    }
+    .hero-emblem-lv-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.66rem;
+      letter-spacing: 2px;
+      color: var(--text-mute);
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* 浮動標籤 */
+    .hero-emblem-tag {
+      position: absolute;
+      padding: 6px 12px;
+      background: var(--bg-dark);
+      border: 1px solid var(--orange);
+      color: var(--orange);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      box-shadow: 0 0 16px var(--orange-glow);
+      white-space: nowrap;
+    }
+    .hero-emblem-tag.t1 { top: 8%; right: -8%; }
+    .hero-emblem-tag.t2 { bottom: 12%; left: -12%; }
+    .hero-emblem-tag.t3 { top: 50%; right: -20%; }
+    @media (max-width: 767px) {
+      .hero-emblem-tag.t1 { right: 0; }
+      .hero-emblem-tag.t2 { left: 0; }
+      .hero-emblem-tag.t3 { right: 0; top: auto; bottom: 35%; }
+    }
+
+    /* Hero 底部 stats */
+    .hero-bottom {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 32px 48px;
+      border-top: 1px solid var(--line-dim);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      position: relative;
+      z-index: 2;
+    }
+    @media (max-width: 768px) {
+      .hero-bottom { padding: 20px 22px; gap: 12px; grid-template-columns: repeat(3, 1fr); }
+    }
+    .hero-stat-cell {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .hero-stat-num {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 700;
+      color: var(--orange);
+      text-shadow: 0 0 16px var(--orange-glow);
+      letter-spacing: -0.5px;
+    }
+    .hero-stat-label {
+      font-size: 0.72rem;
+      letter-spacing: 1.5px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+    @media (max-width: 768px) {
+      .hero-stat-cell { flex-direction: column; gap: 4px; align-items: flex-start; }
+      .hero-stat-label { font-size: 0.62rem; }
+    }
+
+    /* ══════════════════════════════════════
+       01 / THE STRUGGLE
+    ══════════════════════════════════════ */
+    .struggle-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .struggle-item {
+      padding: 56px 0;
+      border-bottom: 1px solid var(--line-dim);
+      display: grid;
+      grid-template-columns: 200px 1fr 1px 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+    .struggle-item:last-child { border-bottom: none; }
+    @media (max-width: 991px) {
+      .struggle-item { grid-template-columns: 1fr; gap: 24px; padding: 48px 0; }
+      .struggle-divider { display: none; }
+    }
+    .struggle-mark {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 3px;
+      color: var(--orange);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .struggle-mark-num {
+      display: block;
+      font-size: 2.4rem;
+      color: var(--text-light);
+      font-weight: 700;
+      letter-spacing: -1px;
+      margin-bottom: 4px;
+      text-shadow: 0 0 16px var(--orange-glow);
+    }
+    .struggle-bad, .struggle-good {
+      padding: 24px;
+      border: 1px solid var(--line-dim);
+    }
+    .struggle-bad {
+      background: rgba(255,77,94,0.06);
+      border-color: rgba(255,77,94,0.32);
+    }
+    .struggle-good {
+      background: rgba(255,163,0,0.06);
+      border-color: var(--line-bright);
+      box-shadow: 0 0 24px rgba(255,163,0,0.08);
+    }
+    .struggle-divider {
+      width: 1px;
+      background: var(--line-dim);
+      height: 100%;
+      min-height: 100px;
+    }
+    .struggle-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .struggle-bad .struggle-tag { color: var(--red); }
+    .struggle-good .struggle-tag { color: var(--orange); }
+    .struggle-title {
+      font-size: 1.18rem;
+      font-weight: 700;
+      color: var(--text-light);
+      line-height: 1.35;
+      margin: 0 0 10px;
+    }
+    .struggle-desc {
+      font-size: 0.94rem;
+      color: var(--text-mute);
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    /* ══════════════════════════════════════
+       02 / CHAMPION SPOTLIGHT — RPG profile card
+    ══════════════════════════════════════ */
+    .champion-card {
+      max-width: 920px;
+      margin: 0 auto;
+      background:
+        linear-gradient(135deg, rgba(255,163,0,0.04) 0%, rgba(255,215,0,0.02) 100%),
+        var(--bg-dark-2);
+      border: 1px solid var(--orange);
+      box-shadow: 0 0 0 1px var(--line-dim), 0 0 56px rgba(255,163,0,0.18), 0 24px 64px rgba(0,0,0,0.4);
+      position: relative;
+    }
+    .champion-card-head {
+      padding: 22px 28px;
+      border-bottom: 1px solid var(--line-dim);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+    .champion-card-head-tier {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .champion-card-grid {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 0;
+    }
+    @media (max-width: 768px) {
+      .champion-card-grid { grid-template-columns: 1fr; }
+    }
+    .champion-portrait {
+      padding: 40px;
+      background:
+        radial-gradient(circle at center, rgba(255,163,0,0.25) 0%, transparent 60%),
+        var(--bg-dark);
+      border-right: 1px solid var(--line-dim);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      position: relative;
+    }
+    @media (max-width: 768px) {
+      .champion-portrait { border-right: none; border-bottom: 1px solid var(--line-dim); padding: 32px; }
+    }
+    .champion-avatar {
+      width: 160px;
+      height: 184px;
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      background: linear-gradient(135deg, var(--orange) 0%, var(--orange-dark) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: drop-shadow(0 0 28px var(--orange-glow));
+    }
+    .champion-avatar-inner {
+      width: 92%; height: 92%;
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      background: var(--bg-dark) center / cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      font-weight: 900;
+      color: var(--text-light);
+      overflow: hidden;
+    }
+    .champion-avatar-inner img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+    }
+    .champion-name {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--text-light);
+      margin: 0;
+      letter-spacing: -0.5px;
+    }
+    .champion-class {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 2.5px;
+      color: var(--orange);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .champion-body {
+      padding: 40px;
+    }
+    @media (max-width: 768px) { .champion-body { padding: 32px 24px; } }
+    .champion-body-section + .champion-body-section { margin-top: 28px; padding-top: 28px; border-top: 1px dashed var(--line-dim); }
+    .champion-section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 2.5px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+    .champion-stat-bar {
+      display: grid;
+      grid-template-columns: 100px 1fr 50px;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .champion-stat-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--text-mute);
+      letter-spacing: 0.5px;
+    }
+    .champion-stat-bar-track {
+      height: 8px;
+      background: rgba(255,255,255,0.08);
+      position: relative;
+      overflow: hidden;
+    }
+    .champion-stat-bar-fill {
+      position: absolute;
+      top: 0; left: 0; bottom: 0;
+      background: linear-gradient(90deg, var(--orange), var(--gold));
+      box-shadow: 0 0 12px var(--orange-glow);
+    }
+    .champion-stat-bar-fill[data-fill="100"] { width: 100%; }
+    .champion-stat-bar-fill[data-fill="80"] { width: 80%; }
+    .champion-stat-bar-fill[data-fill="60"] { width: 60%; }
+    .champion-stat-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.86rem;
+      color: var(--orange);
+      font-weight: 700;
+      text-align: right;
+    }
+    .champion-quote {
+      font-size: 1.18rem;
+      line-height: 1.5;
+      color: var(--text-light);
+      padding: 14px 18px;
+      border-left: 3px solid var(--orange);
+      background: rgba(255,163,0,0.05);
+    }
+    .champion-meta-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .champion-more {
+      text-align: center;
+      margin-top: 40px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.84rem;
+      letter-spacing: 1.5px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+    .champion-more a {
+      color: var(--orange);
+      text-decoration: none;
+      border-bottom: 1px solid var(--orange);
+      padding-bottom: 2px;
+    }
+
+    /* ══════════════════════════════════════
+       03 / THE GUILD — 4 個守則
+    ══════════════════════════════════════ */
+    .guild-banner {
+      max-width: 900px;
+      margin: 0 auto 56px;
+      text-align: center;
+      padding: 40px 32px;
+      border: 2px solid var(--orange);
+      background:
+        radial-gradient(ellipse at center, rgba(255,163,0,0.08) 0%, transparent 70%),
+        var(--bg-dark-2);
+      box-shadow: 0 0 0 1px var(--line-dim), 0 0 48px rgba(255,163,0,0.15);
+      position: relative;
+    }
+    .guild-banner-crest {
+      width: 80px;
+      height: 92px;
+      margin: 0 auto 18px;
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      background: var(--orange);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: drop-shadow(0 0 20px var(--orange-glow));
+    }
+    .guild-banner-crest-inner {
+      width: 90%; height: 90%;
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      background: var(--bg-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--orange);
+      letter-spacing: -1px;
+    }
+    .guild-banner-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.86rem;
+      letter-spacing: 3px;
+      color: var(--orange);
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .guild-banner-title {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--text-light);
+      letter-spacing: -0.5px;
+      margin: 0 0 12px;
+    }
+    .guild-banner-sub {
+      color: var(--text-mute);
+      font-size: 0.96rem;
+      margin: 0;
+    }
+
+    .guild-rules {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+    @media (max-width: 768px) { .guild-rules { grid-template-columns: 1fr; } }
+    .guild-rule {
+      padding: 32px;
+      background: var(--bg-dark-2);
+      border: 1px solid var(--line-dim);
+      position: relative;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+    .guild-rule:hover {
+      border-color: var(--orange);
+      box-shadow: 0 0 24px var(--orange-glow);
+    }
+    .guild-rule-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 2.5px;
+      color: var(--orange);
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+    .guild-rule-title {
+      font-size: 1.42rem;
+      font-weight: 900;
+      color: var(--text-light);
+      margin: 0 0 16px;
+      letter-spacing: -0.3px;
+      line-height: 1.25;
+    }
+    .guild-rule-body {
+      font-size: 0.98rem;
+      line-height: 1.7;
+      color: var(--text-mute);
+      margin: 0;
+    }
+
+    /* ══════════════════════════════════════
+       04 / THE MENTOR
+    ══════════════════════════════════════ */
+    .mentor-card {
+      max-width: 920px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 0;
+      background: var(--bg-dark-2);
+      border: 1px solid var(--line-bright);
+      box-shadow: 0 0 64px rgba(255,163,0,0.12);
+    }
+    @media (max-width: 768px) { .mentor-card { grid-template-columns: 1fr; } }
+    .mentor-portrait {
+      padding: 48px;
+      background:
+        radial-gradient(circle at 40% 30%, rgba(255,163,0,0.22) 0%, transparent 60%),
+        var(--bg-dark);
+      border-right: 1px solid var(--line-dim);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      text-align: center;
+    }
+    @media (max-width: 768px) {
+      .mentor-portrait { border-right: none; border-bottom: 1px solid var(--line-dim); padding: 36px 24px; }
+    }
+    .mentor-avatar {
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--orange) 0%, var(--orange-dark) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.6rem;
+      box-shadow: 0 0 28px var(--orange-glow), 0 0 0 4px var(--bg-dark), 0 0 0 6px var(--orange);
+      overflow: hidden;
+      position: relative;
+    }
+    .mentor-avatar img {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+    }
+    .mentor-name {
+      font-size: 1.65rem;
+      font-weight: 900;
+      color: var(--text-light);
+      margin: 0;
+      letter-spacing: -0.4px;
+    }
+    .mentor-class {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      letter-spacing: 2.5px;
+      color: var(--orange);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .mentor-level {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      letter-spacing: 1.5px;
+      padding: 5px 12px;
+      background: var(--orange-soft);
+      border: 1px solid var(--orange);
+      color: var(--orange);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .mentor-body {
+      padding: 40px;
+    }
+    @media (max-width: 768px) { .mentor-body { padding: 32px 24px; } }
+    .mentor-section + .mentor-section { margin-top: 24px; padding-top: 24px; border-top: 1px dashed var(--line-dim); }
+    .mentor-section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.66rem;
+      letter-spacing: 2.5px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .mentor-section ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .mentor-section li {
+      display: grid;
+      grid-template-columns: 18px 1fr;
+      gap: 12px;
+      padding: 6px 0;
+      font-size: 0.98rem;
+      color: var(--text-glow);
+      line-height: 1.5;
+    }
+    .mentor-section li::before {
+      content: '▸';
+      color: var(--orange);
+      font-family: monospace;
+    }
+    .mentor-skills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* ══════════════════════════════════════
+       05 / SKILL TREE
+    ══════════════════════════════════════ */
+    .skill-tree {
+      position: relative;
+      max-width: 1080px;
+      margin: 0 auto;
+      aspect-ratio: 16/10;
+      min-height: 480px;
+      background:
+        radial-gradient(ellipse at center, rgba(255,163,0,0.08) 0%, transparent 65%),
+        url('assets/G-skills.png') center / contain no-repeat;
+    }
+    .skill-tree::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 0%, rgba(10,8,20,0.55) 80%);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .skill-tree > * { position: relative; z-index: 2; }
+    .skill-node {
+      position: absolute;
+      width: 180px;
+      height: 200px;
+      transform: translate(-50%, -50%);
+    }
+    .skill-node-hex {
+      width: 100%; height: 100%;
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      background: var(--bg-dark-2);
+      border: 2px solid var(--orange);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 0 20px;
+      transition: all 0.3s;
+      cursor: default;
+      position: relative;
+    }
+    .skill-node.core .skill-node-hex {
+      background: linear-gradient(135deg, var(--orange) 0%, var(--orange-dark) 100%);
+      filter: drop-shadow(0 0 32px var(--orange-glow));
+    }
+    .skill-node:hover .skill-node-hex {
+      transform: scale(1.08);
+      box-shadow: 0 0 0 2px var(--orange);
+    }
+    .skill-node.core:hover .skill-node-hex { transform: scale(1.06); }
+    .skill-node-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      color: var(--orange);
+      font-weight: 700;
+    }
+    .skill-node.core .skill-node-num { color: rgba(0,0,0,0.6); }
+    .skill-node-name {
+      font-size: 1.05rem;
+      font-weight: 900;
+      color: var(--text-light);
+      text-align: center;
+      line-height: 1.2;
+    }
+    .skill-node.core .skill-node-name { color: var(--bg-dark); font-size: 1.2rem; }
+    .skill-node-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 1.5px;
+      color: var(--text-mute);
+      text-transform: uppercase;
+      text-align: center;
+    }
+    .skill-node.core .skill-node-tag { color: rgba(0,0,0,0.55); }
+
+    /* 五個 node 位置（桌面） */
+    .skill-node.pos-center { top: 50%; left: 50%; }
+    .skill-node.pos-tl { top: 18%; left: 22%; }
+    .skill-node.pos-tr { top: 18%; left: 78%; }
+    .skill-node.pos-bl { top: 82%; left: 22%; }
+    .skill-node.pos-br { top: 82%; left: 78%; }
+
+    /* 連線（SVG） */
+    .skill-lines {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .skill-lines line {
+      stroke: var(--orange);
+      stroke-width: 1.5;
+      stroke-dasharray: 4 6;
+      opacity: 0.5;
+      animation: linePulse 4s ease-in-out infinite;
+    }
+    @keyframes linePulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.7; }
+    }
+
+    /* 手機：技能樹改 list */
+    @media (max-width: 768px) {
+      .skill-tree {
+        aspect-ratio: auto;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .skill-node {
+        position: relative;
+        top: auto !important; left: auto !important;
+        transform: none;
+        width: 100%;
+        height: auto;
+      }
+      .skill-node-hex {
+        clip-path: none;
+        flex-direction: row;
+        padding: 22px 24px;
+        gap: 16px;
+        justify-content: flex-start;
+        text-align: left;
+        background: var(--bg-dark-2);
+      }
+      .skill-node.core .skill-node-hex { padding: 22px 24px; }
+      .skill-node-num { font-size: 0.8rem; flex-shrink: 0; }
+      .skill-node-name { font-size: 1.05rem; }
+      .skill-node-tag { font-size: 0.7rem; margin-left: auto; }
+      .skill-lines { display: none; }
+    }
+
+    /* ══════════════════════════════════════
+       06 / DAILY ROUTINE — Quest log
+    ══════════════════════════════════════ */
+    .quest-log {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    @media (max-width: 768px) { .quest-log { grid-template-columns: 1fr; } }
+    .quest-phase {
+      background: var(--bg-dark-2);
+      border: 1px solid var(--line-bright);
+      position: relative;
+    }
+    .quest-phase-head {
+      padding: 24px 28px;
+      border-bottom: 1px solid var(--line-dim);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      background: rgba(255,163,0,0.04);
+    }
+    .quest-phase-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      letter-spacing: 2.5px;
+      color: var(--orange);
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .quest-phase-title {
+      font-size: 1.45rem;
+      font-weight: 900;
+      color: var(--text-light);
+      letter-spacing: -0.3px;
+      margin: 0;
+    }
+    .quest-phase-time {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      letter-spacing: 1.5px;
+    }
+    .quest-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .quest-item {
+      display: grid;
+      grid-template-columns: 28px 1fr auto;
+      gap: 14px;
+      padding: 16px 28px;
+      border-bottom: 1px dashed var(--line-soft);
+      align-items: center;
+    }
+    .quest-item:last-child { border-bottom: none; }
+    .quest-check {
+      width: 18px; height: 18px;
+      border: 1.5px solid var(--orange);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      color: var(--orange);
+      font-family: monospace;
+      font-weight: 700;
+    }
+    .quest-name {
+      font-size: 0.98rem;
+      color: var(--text-glow);
+      font-weight: 500;
+    }
+    .quest-name strong { color: var(--text-light); font-weight: 700; }
+    .quest-xp {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--orange);
+      letter-spacing: 1px;
+      font-weight: 700;
+    }
+
+    /* ══════════════════════════════════════
+       07 / CLASS REQUIREMENTS
+    ══════════════════════════════════════ */
+    .req-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      max-width: 1080px;
+      margin: 0 auto;
+      border: 1px solid var(--line-dim);
+    }
+    @media (max-width: 768px) { .req-grid { grid-template-columns: 1fr; } }
+    .req-col {
+      padding: 40px;
+    }
+    @media (max-width: 768px) { .req-col { padding: 28px 24px; } }
+    .req-col-yes {
+      border-right: 1px solid var(--line-dim);
+      background: linear-gradient(180deg, rgba(255,163,0,0.06) 0%, transparent 100%);
+    }
+    @media (max-width: 768px) {
+      .req-col-yes { border-right: none; border-bottom: 1px solid var(--line-dim); }
+    }
+    .req-col-no { background: rgba(255,77,94,0.04); }
+    .req-col-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .req-col-yes .req-col-label { color: var(--orange); }
+    .req-col-no .req-col-label { color: var(--red); }
+    .req-col-title {
+      font-size: 1.45rem;
+      font-weight: 900;
+      color: var(--text-light);
+      margin: 0 0 24px;
+      line-height: 1.25;
+    }
+    .req-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .req-list li {
+      display: grid;
+      grid-template-columns: 20px 1fr;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px dashed var(--line-soft);
+      font-size: 0.98rem;
+      line-height: 1.55;
+      color: var(--text-mute);
+    }
+    .req-list li:last-child { border-bottom: none; }
+    .req-list li::before {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+    .req-col-yes .req-list li::before { content: '✓'; color: var(--orange); }
+    .req-col-no .req-list li::before { content: '✕'; color: var(--red); }
+
+    /* ══════════════════════════════════════
+       08 / BOSS LIST
+    ══════════════════════════════════════ */
+    .boss-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    @media (max-width: 991px) { .boss-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 768px) {
+      .boss-grid {
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        margin: 0 -22px;
+        padding: 6px 22px 16px;
+        gap: 14px;
+        scrollbar-width: none;
+      }
+      .boss-grid::-webkit-scrollbar { display: none; }
+    }
+    .boss-card {
+      background: var(--bg-dark-2);
+      border: 1px solid var(--line-dim);
+      padding: 24px;
+      position: relative;
+      transition: all 0.3s;
+      cursor: default;
+    }
+    @media (max-width: 768px) {
+      .boss-card { flex: 0 0 78%; scroll-snap-align: center; }
+    }
+    .boss-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--orange);
+      box-shadow: 0 0 24px var(--orange-glow);
+    }
+    .boss-tier {
+      position: absolute;
+      top: -1px; right: 18px;
+    }
+    .boss-portrait {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      max-height: 240px;
+      margin: -24px -24px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      background: linear-gradient(180deg, rgba(255,163,0,0.06) 0%, rgba(10,8,20,0.4) 100%);
+      border-bottom: 1px solid var(--line-bright);
+      overflow: hidden;
+      position: relative;
+    }
+    .boss-portrait img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .boss-card:hover .boss-portrait img { transform: scale(1.06); }
+    .boss-portrait::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 55%, rgba(10,8,20,0.85) 100%);
+      pointer-events: none;
+    }
+    .boss-name {
+      font-size: 1.18rem;
+      font-weight: 900;
+      color: var(--text-light);
+      margin: 0 0 4px;
+      letter-spacing: -0.3px;
+    }
+    .boss-name-en {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 2px;
+      color: var(--orange);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      font-weight: 700;
+    }
+    .boss-stats {
+      display: grid;
+      grid-template-columns: 60px 1fr;
+      gap: 8px;
+      margin-bottom: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line-soft);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+    }
+    .boss-stats dt {
+      color: var(--text-dim);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+    .boss-stats dd {
+      margin: 0;
+      color: var(--text-light);
+      font-weight: 700;
+    }
+    .boss-stats dd.diff { color: var(--gold); }
+    .boss-strategy {
+      font-size: 0.86rem;
+      line-height: 1.55;
+      color: var(--text-mute);
+      padding-top: 14px;
+      border-top: 1px dashed var(--line-soft);
+      margin: 0;
+    }
+    .boss-strategy strong { color: var(--text-light); }
+
+    /* ══════════════════════════════════════
+       09 / HALL OF CHAMPIONS — 米白呼吸區
+    ══════════════════════════════════════ */
+    .champions-top {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 56px;
+    }
+    @media (max-width: 991px) { .champions-top { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 575px) { .champions-top { grid-template-columns: 1fr; } }
+    .champ-card {
+      background: #fff;
+      border: 1px solid rgba(0,0,0,0.12);
+      padding: 32px 24px 28px;
+      text-align: center;
+      position: relative;
+      transition: all 0.3s;
+    }
+    .champ-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--orange);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.1), 0 0 32px rgba(255,163,0,0.2);
+    }
+    .champ-tier {
+      position: absolute;
+      top: 14px; left: 14px;
+    }
+    .champ-hex {
+      width: 132px; height: 152px;
+      margin: 0 auto 18px;
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      background: var(--bg-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--orange);
+      position: relative;
+      overflow: hidden;
+    }
+    .champ-hex img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .champ-card:hover .champ-hex img { transform: scale(1.08); }
+    .champ-hex-frame {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    }
+    .champ-card:nth-child(1) .champ-hex { box-shadow: 0 0 0 3px var(--gold), 0 0 24px rgba(255,215,0,0.45); }
+    .champ-card:nth-child(2) .champ-hex { box-shadow: 0 0 0 3px var(--gold), 0 0 24px rgba(255,215,0,0.35); }
+    .champ-card:nth-child(3) .champ-hex,
+    .champ-card:nth-child(4) .champ-hex,
+    .champ-card:nth-child(5) .champ-hex { box-shadow: 0 0 0 3px var(--purple), 0 0 24px rgba(182,121,255,0.35); }
+    .champ-card:nth-child(6) .champ-hex { box-shadow: 0 0 0 3px var(--teal), 0 0 24px rgba(0,229,201,0.35); }
+    .champ-name {
+      font-size: 1.42rem;
+      font-weight: 900;
+      color: var(--bg-dark);
+      margin: 0 0 12px;
+      letter-spacing: -0.3px;
+    }
+    .champ-score {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--orange-dark);
+      padding: 4px 12px;
+      border: 1px solid var(--orange);
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+    .champ-school {
+      font-size: 0.92rem;
+      color: var(--bg-dark);
+      font-weight: 700;
+      margin: 4px 0;
+    }
+    .champ-school.empty { color: rgba(10,8,20,0.4); font-weight: 400; font-style: italic; font-size: 0.84rem; }
+    .champ-note {
+      font-size: 0.76rem;
+      color: rgba(10,8,20,0.55);
+      margin: 6px 0 0;
+      letter-spacing: 0.3px;
+    }
+
+    /* Leaderboard 表格 */
+    .leaderboard {
+      max-width: 1080px;
+      margin: 0 auto;
+      border-top: 3px solid var(--bg-dark);
+    }
+    .leaderboard-head {
+      display: grid;
+      grid-template-columns: 60px 1.4fr 1.4fr 1fr 1fr;
+      gap: 16px;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--bg-dark);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      color: rgba(10,8,20,0.6);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .leaderboard-row {
+      display: grid;
+      grid-template-columns: 60px 1.4fr 1.4fr 1fr 1fr;
+      gap: 16px;
+      padding: 18px 20px;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      align-items: center;
+      transition: background 0.2s;
+    }
+    .leaderboard-row:hover { background: rgba(255,163,0,0.04); }
+    .leaderboard-rank {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--orange-dark);
+    }
+    .leaderboard-name {
+      font-size: 1.08rem;
+      font-weight: 800;
+      color: var(--bg-dark);
+    }
+    .leaderboard-score {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--orange-dark);
+      font-weight: 700;
+    }
+    .leaderboard-school {
+      color: var(--bg-dark);
+      font-weight: 700;
+    }
+    .leaderboard-school.empty { color: rgba(10,8,20,0.4); font-style: italic; font-weight: 400; font-size: 0.86rem; }
+    .leaderboard-note {
+      font-size: 0.84rem;
+      color: rgba(10,8,20,0.6);
+    }
+    @media (max-width: 768px) {
+      .leaderboard-head { display: none; }
+      .leaderboard-row {
+        grid-template-columns: 40px 1fr;
+        gap: 4px 12px;
+        padding: 16px 0;
+      }
+      .leaderboard-rank { grid-row: 1 / 3; align-self: start; }
+      .leaderboard-name { grid-column: 2; }
+      .leaderboard-score { grid-column: 2; font-size: 0.84rem; }
+      .leaderboard-school { grid-column: 2; font-size: 0.92rem; }
+      .leaderboard-note { grid-column: 2; }
+    }
+
+    /* ══════════════════════════════════════
+       10 / LOOT TABLE
+    ══════════════════════════════════════ */
+    .loot-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+    @media (max-width: 768px) { .loot-grid { grid-template-columns: 1fr; } }
+    .loot-card {
+      background: var(--bg-dark-2);
+      border: 1px solid var(--line-dim);
+      padding: 28px;
+      position: relative;
+      transition: all 0.3s;
+    }
+    .loot-card:hover {
+      border-color: var(--orange);
+      box-shadow: 0 0 24px var(--orange-glow);
+    }
+    .loot-tier-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+    .loot-icon {
+      width: 96px; height: 96px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      background: rgba(255,163,0,0.08);
+      border: 1px solid var(--orange);
+      overflow: hidden;
+      position: relative;
+    }
+    .loot-icon img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .loot-card:hover .loot-icon img { transform: scale(1.08); }
+
+    /* ── LOOT 6-color + 6-shape system ── */
+
+    /* 1. lc-gold  (APCS · LEGENDARY) */
+    .loot-card.lc-gold {
+      border: 2px solid var(--gold);
+      box-shadow: 0 0 0 1px rgba(255,215,0,0.25), 0 0 32px rgba(255,215,0,0.22), inset 0 1px 0 rgba(255,215,0,0.15);
+    }
+    .loot-card.lc-gold:hover { box-shadow: 0 0 0 2px var(--gold), 0 0 56px rgba(255,215,0,0.45), inset 0 1px 0 rgba(255,215,0,0.25); }
+    .loot-card.lc-gold .loot-icon { background: rgba(255,215,0,0.15); border: 2px solid var(--gold); box-shadow: 0 0 16px rgba(255,215,0,0.35); }
+    .loot-card.lc-gold .tier { background: var(--gold); color: #6E5500; box-shadow: 0 0 16px rgba(255,215,0,0.55); }
+
+    /* 2. lc-pink  (CPE · EPIC) */
+    .loot-card.lc-pink {
+      border: 1px solid #FF4D9E;
+      box-shadow: 0 0 0 1px rgba(255,77,158,0.25), 0 0 24px rgba(255,77,158,0.18);
+    }
+    .loot-card.lc-pink:hover { box-shadow: 0 0 0 2px #FF4D9E, 0 0 36px rgba(255,77,158,0.45); }
+    .loot-card.lc-pink .loot-icon { background: rgba(255,77,158,0.12); border: 1px solid #FF4D9E; box-shadow: 0 0 14px rgba(255,77,158,0.3); }
+    .loot-card.lc-pink .tier { background: #FF4D9E; color: #4A0024; }
+
+    /* 3. lc-violet (競賽 · EPIC) */
+    .loot-card.lc-violet {
+      border: 1px solid var(--purple);
+      box-shadow: 0 0 0 1px rgba(182,121,255,0.25), 0 0 24px rgba(182,121,255,0.18);
+    }
+    .loot-card.lc-violet:hover { box-shadow: 0 0 0 2px var(--purple), 0 0 36px rgba(182,121,255,0.45); }
+    .loot-card.lc-violet .loot-icon { background: rgba(182,121,255,0.12); border: 1px solid var(--purple); box-shadow: 0 0 14px rgba(182,121,255,0.3); }
+    .loot-card.lc-violet .tier { background: var(--purple); color: #2A0E48; }
+
+    /* 4. lc-blue   (HackMD · RARE) */
+    .loot-card.lc-blue {
+      border: 1px solid #4DB4FF;
+      box-shadow: 0 0 0 1px rgba(77,180,255,0.25), 0 0 24px rgba(77,180,255,0.18);
+    }
+    .loot-card.lc-blue:hover { box-shadow: 0 0 0 2px #4DB4FF, 0 0 36px rgba(77,180,255,0.45); }
+    .loot-card.lc-blue .loot-icon { background: rgba(77,180,255,0.12); border: 1px solid #4DB4FF; box-shadow: 0 0 14px rgba(77,180,255,0.3); }
+    .loot-card.lc-blue .tier { background: #4DB4FF; color: #002A4D; }
+
+    /* 5. lc-teal   (ITSA · RARE) */
+    .loot-card.lc-teal {
+      border: 1px solid var(--teal);
+      box-shadow: 0 0 0 1px rgba(0,229,201,0.25), 0 0 24px rgba(0,229,201,0.18);
+    }
+    .loot-card.lc-teal:hover { box-shadow: 0 0 0 2px var(--teal), 0 0 36px rgba(0,229,201,0.45); }
+    .loot-card.lc-teal .loot-icon { background: rgba(0,229,201,0.12); border: 1px solid var(--teal); box-shadow: 0 0 14px rgba(0,229,201,0.3); }
+    .loot-card.lc-teal .tier { background: var(--teal); color: #003E37; }
+
+    /* 6. lc-green  (演算法 · RARE) */
+    .loot-card.lc-green {
+      border: 1px solid #4DE57F;
+      box-shadow: 0 0 0 1px rgba(77,229,127,0.25), 0 0 24px rgba(77,229,127,0.18);
+    }
+    .loot-card.lc-green:hover { box-shadow: 0 0 0 2px #4DE57F, 0 0 36px rgba(77,229,127,0.45); }
+    .loot-card.lc-green .loot-icon { background: rgba(77,229,127,0.12); border: 1px solid #4DE57F; box-shadow: 0 0 14px rgba(77,229,127,0.3); }
+    .loot-card.lc-green .tier { background: #4DE57F; color: #003E1B; }
+
+    /* 6 distinct icon shapes (clip-path) */
+    .loot-icon.li-square  { /* default rectangle, no clip */ }
+    .loot-icon.li-hex     { clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); }
+    .loot-icon.li-octa    { clip-path: polygon(22% 0%, 78% 0%, 100% 22%, 100% 78%, 78% 100%, 22% 100%, 0% 78%, 0% 22%); }
+    .loot-icon.li-diamond { clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); width: 108px; height: 108px; }
+    .loot-icon.li-circle  { border-radius: 50%; }
+    .loot-icon.li-notch   { clip-path: polygon(18% 0%, 100% 0%, 100% 82%, 82% 100%, 0% 100%, 0% 18%); }
+
+    /* 卡片右上裝飾色條 — 額外強化「6 卡 6 色」記號 */
+    .loot-card::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 56px; height: 3px;
+    }
+    .loot-card.lc-gold::before   { background: var(--gold);   box-shadow: 0 0 12px var(--gold); }
+    .loot-card.lc-pink::before   { background: #FF4D9E;       box-shadow: 0 0 12px #FF4D9E; }
+    .loot-card.lc-violet::before { background: var(--purple); box-shadow: 0 0 12px var(--purple); }
+    .loot-card.lc-blue::before   { background: #4DB4FF;       box-shadow: 0 0 12px #4DB4FF; }
+    .loot-card.lc-teal::before   { background: var(--teal);   box-shadow: 0 0 12px var(--teal); }
+    .loot-card.lc-green::before  { background: #4DE57F;       box-shadow: 0 0 12px #4DE57F; }
+    .loot-name {
+      font-size: 1.22rem;
+      font-weight: 900;
+      color: var(--text-light);
+      margin: 0 0 10px;
+      letter-spacing: -0.3px;
+    }
+    .loot-desc {
+      font-size: 0.92rem;
+      color: var(--text-mute);
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    /* ══════════════════════════════════════
+       11 / THE TRUTH
+    ══════════════════════════════════════ */
+    .truth-list {
+      max-width: 880px;
+      margin: 0 auto;
+      border-top: 1px solid var(--line-dim);
+    }
+    .truth-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1.3fr;
+      gap: 32px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--line-soft);
+      align-items: center;
+    }
+    @media (max-width: 768px) {
+      .truth-row { grid-template-columns: 1fr; gap: 8px; padding: 20px 0; }
+    }
+    .truth-left {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.94rem;
+      color: var(--text-dim);
+      letter-spacing: 0.3px;
+    }
+    .truth-left::before {
+      content: '✕ ';
+      color: var(--red);
+      font-weight: 700;
+    }
+    .truth-arrow {
+      color: var(--orange);
+      font-weight: 700;
+      font-family: monospace;
+      font-size: 1.3rem;
+      text-align: center;
+    }
+    @media (max-width: 768px) { .truth-arrow { display: none; } }
+    .truth-right {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-light);
+      letter-spacing: -0.2px;
+    }
+    .truth-right::before {
+      content: '→ ';
+      color: var(--orange);
+      font-family: monospace;
+      font-weight: 700;
+    }
+    @media (min-width: 769px) { .truth-right::before { display: none; } }
+
+    .truth-quote {
+      margin: 64px auto 0;
+      max-width: 880px;
+      padding: 48px 0;
+      border-top: 3px solid var(--orange);
+      border-bottom: 3px solid var(--orange);
+      font-size: clamp(1.3rem, 2.8vw, 2rem);
+      font-weight: 800;
+      line-height: 1.45;
+      color: var(--text-light);
+      letter-spacing: -0.5px;
+    }
+    .truth-quote .accent {
+      color: var(--orange);
+      text-shadow: 0 0 16px var(--orange-glow);
+    }
+
+    /* ══════════════════════════════════════
+       12 / MISSION BRIEFING — 米白呼吸區
+    ══════════════════════════════════════ */
+    .mb-meta-bar {
+      max-width: 1080px;
+      margin: 0 auto 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(0,0,0,0.15);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      letter-spacing: 2px;
+      color: rgba(10,8,20,0.6);
+      text-transform: uppercase;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .mb-meta-bar strong { color: var(--bg-dark); font-weight: 700; }
+
+    .mb-chips {
+      display: flex;
+      gap: 8px;
+      margin: 32px auto 24px;
+      max-width: 1080px;
+      flex-wrap: wrap;
+    }
+    .mb-chip {
+      background: transparent;
+      border: 1px solid rgba(0,0,0,0.2);
+      color: rgba(10,8,20,0.7);
+      padding: 8px 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .mb-chip.active {
+      background: var(--bg-dark);
+      color: var(--orange);
+      border-color: var(--bg-dark);
+    }
+    .mb-chip:hover:not(.active) { border-color: var(--bg-dark); }
+
+    .mb-list {
+      max-width: 1080px;
+      margin: 0 auto;
+      list-style: none;
+      padding: 0;
+    }
+    .mb-item {
+      padding: 30px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+    .mb-item:last-child { border-bottom: 2px solid var(--bg-dark); }
+    .mb-q {
+      display: grid;
+      grid-template-columns: 80px 1fr 32px;
+      gap: 18px;
+      align-items: baseline;
+      cursor: pointer;
+    }
+    @media (max-width: 768px) { .mb-q { grid-template-columns: 56px 1fr 24px; gap: 12px; } }
+    .mb-q-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.84rem;
+      letter-spacing: 2px;
+      color: var(--orange-dark);
+      font-weight: 700;
+    }
+    .mb-q-text {
+      font-size: 1.18rem;
+      font-weight: 700;
+      color: var(--bg-dark);
+      line-height: 1.4;
+      letter-spacing: -0.2px;
+    }
+    @media (max-width: 768px) { .mb-q-text { font-size: 1.02rem; } }
+    .mb-q-toggle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.4rem;
+      color: var(--bg-dark);
+      font-weight: 300;
+      transition: transform 0.3s;
+    }
+    .mb-item.open .mb-q-toggle { transform: rotate(45deg); color: var(--orange-dark); }
+    .mb-a {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 18px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, margin-top 0.3s ease;
+    }
+    @media (max-width: 768px) { .mb-a { grid-template-columns: 56px 1fr; gap: 12px; } }
+    .mb-item.open .mb-a { max-height: 800px; margin-top: 18px; }
+    .mb-a-inner {
+      grid-column: 2;
+      font-size: 1rem;
+      line-height: 1.8;
+      color: rgba(10,8,20,0.78);
+      padding-right: 32px;
+    }
+    .mb-a-inner strong { color: var(--bg-dark); font-weight: 700; }
+    .mb-a-inner a { color: var(--orange-dark); border-bottom: 1px solid var(--orange-dark); text-decoration: none; }
+
+    .mb-list[data-active="content"] .mb-item:not([data-cat="content"]),
+    .mb-list[data-active="signup"] .mb-item:not([data-cat="signup"]),
+    .mb-list[data-active="outcome"] .mb-item:not([data-cat="outcome"]) { display: none; }
+
+    /* ══════════════════════════════════════
+       ENDING / FINAL CTA
+    ══════════════════════════════════════ */
+    .ending {
+      background:
+        radial-gradient(ellipse at 50% 50%, rgba(255,163,0,0.22) 0%, transparent 60%),
+        var(--bg-dark);
+      padding: 160px 0 120px;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+    @media (max-width: 768px) { .ending { padding: 100px 0 80px; } }
+    .ending-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      letter-spacing: 4px;
+      color: var(--orange);
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 36px;
+      text-shadow: 0 0 16px var(--orange-glow);
+    }
+    .ending-headline {
+      font-size: clamp(2.8rem, 7vw, 5.6rem);
+      font-weight: 900;
+      letter-spacing: -2px;
+      line-height: 1.05;
+      color: var(--text-light);
+      margin: 0 0 32px;
+      text-shadow: 0 0 40px rgba(255,255,255,0.2);
+    }
+    .ending-headline .glow {
+      color: var(--orange);
+      text-shadow: 0 0 24px var(--orange-glow), 0 0 60px var(--orange-glow);
+    }
+    .ending-sub {
+      font-size: clamp(1.05rem, 1.6vw, 1.32rem);
+      color: var(--text-mute);
+      line-height: 1.65;
+      max-width: 720px;
+      margin: 0 auto 56px;
+    }
+    .ending-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 18px;
+      padding: 26px 44px;
+      background: var(--orange);
+      color: var(--bg-dark);
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      border: none;
+      cursor: pointer;
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+      transition: all 0.3s;
+      text-decoration: none;
+      box-shadow:
+        0 0 0 1px var(--orange),
+        0 0 48px var(--orange-glow),
+        0 16px 48px rgba(0,0,0,0.5);
+      position: relative;
+    }
+    .ending-cta:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 0 2px var(--orange), 0 0 80px var(--orange-glow), 0 24px 64px rgba(0,0,0,0.6);
+      color: var(--bg-dark);
+    }
+    .ending-cta .key {
+      font-size: 0.74rem;
+      padding: 4px 10px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 3px;
+      letter-spacing: 1.5px;
+    }
+    .ending-warn {
+      margin-top: 64px;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 22px;
+      border: 1px solid var(--line-dim);
+      background: rgba(255,163,0,0.04);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 1.5px;
+      color: var(--text-mute);
+      text-transform: uppercase;
+    }
+    .ending-warn strong { color: var(--orange); }
+
+    .ending-sub-link {
+      margin-top: 48px;
+      font-size: 0.92rem;
+      color: var(--text-dim);
+    }
+    .ending-sub-link a {
+      color: var(--orange);
+      text-decoration: none;
+      border-bottom: 1px solid currentColor;
+    }
+
+    /* ══════════════════════════════════════
+       Mobile sticky CTA
+    ══════════════════════════════════════ */
+    .mobile-sticky-cta {
+      display: none;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 999;
+      padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+      background: var(--bg-dark);
+      transform: translateY(100%);
+      transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+      border-top: 1px solid var(--orange);
+      box-shadow: 0 -12px 32px rgba(0,0,0,0.5);
+    }
+    .mobile-sticky-cta.visible { transform: translateY(0); }
+    .mobile-sticky-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      background: var(--orange);
+      color: var(--bg-dark);
+      font-size: 0.96rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      padding: 14px 24px;
+      border: none;
+      cursor: pointer;
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+      box-shadow: 0 0 24px var(--orange-glow);
+    }
+    @media (max-width: 768px) {
+      .mobile-sticky-cta { display: block; }
+      body { padding-bottom: 76px; }
+    }
+
+    /* ══════════════════════════════════════
+       Modal（暗夜主題）
+    ══════════════════════════════════════ */
+    #trialModal .modal-dialog { max-width: 560px; }
+    .trial-modal-content {
+      border-radius: 0 !important;
+      border: 1px solid var(--orange) !important;
+      overflow: hidden;
+      position: relative;
+      background: var(--bg-dark-2) !important;
+      color: var(--text-light);
+      box-shadow: 0 0 80px rgba(255,163,0,0.32), 0 24px 64px rgba(0,0,0,0.8);
+    }
+    .trial-modal-close {
+      position: absolute;
+      top: 16px; right: 16px;
+      z-index: 10;
+      width: 36px; height: 36px;
+      border: 1px solid var(--orange);
+      background: transparent;
+      color: var(--orange);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .trial-modal-close:hover {
+      background: var(--orange);
+      color: var(--bg-dark);
+      box-shadow: 0 0 16px var(--orange-glow);
+    }
+    .trial-modal-body { padding: 48px 40px 36px; }
+    @media (max-width: 575px) { .trial-modal-body { padding: 32px 22px 24px; } }
+    .trial-modal-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      letter-spacing: 3px;
+      color: var(--orange);
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+    .trial-modal-title {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--text-light);
+      letter-spacing: -0.4px;
+      margin: 0 0 14px;
+      line-height: 1.2;
+    }
+    .trial-modal-desc {
+      font-size: 0.94rem;
+      color: var(--text-mute);
+      line-height: 1.7;
+      margin: 0 0 28px;
+    }
+    .trial-row { margin-bottom: 18px; }
+    .trial-row-radio {
+      display: flex;
+      gap: 24px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line-dim);
+      margin-bottom: 22px;
+    }
+    .trial-radio {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.94rem;
+      color: var(--text-glow);
+      cursor: pointer;
+      font-weight: 500;
+    }
+    .trial-radio input { accent-color: var(--orange); cursor: pointer; }
+    .trial-label {
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .trial-required { color: var(--red); margin-left: 4px; }
+    .trial-input {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 0.98rem;
+      border: 1px solid var(--line-dim);
+      background: var(--bg-dark);
+      color: var(--text-light);
+      font-family: inherit;
+      transition: border-color 0.2s;
+      box-sizing: border-box;
+    }
+    .trial-input:focus { outline: none; border-color: var(--orange); box-shadow: 0 0 0 1px var(--orange); }
+    select.trial-input { cursor: pointer; }
+    .trial-phone-wrap { display: flex; gap: 8px; }
+    .trial-phone-flag {
+      flex-shrink: 0;
+      padding: 12px 14px;
+      background: var(--bg-dark);
+      border: 1px solid var(--line-dim);
+      font-size: 0.92rem;
+      color: var(--text-light);
+      font-weight: 500;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+    }
+    .trial-phone-input { flex: 1; min-width: 0; }
+    .trial-recaptcha-stub {
+      margin: 18px 0;
+      padding: 14px 18px;
+      background: var(--bg-dark);
+      border: 1px solid var(--line-dim);
+      font-size: 0.88rem;
+      color: var(--text-mute);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .trial-recaptcha-stub small { color: var(--text-dim); font-size: 0.72rem; }
+    .trial-submit-btn {
+      width: 100%;
+      padding: 18px 20px;
+      background: var(--orange);
+      color: var(--bg-dark);
+      border: none;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      font-family: 'JetBrains Mono', monospace;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-transform: uppercase;
+      box-shadow: 0 0 24px var(--orange-glow);
+    }
+    .trial-submit-btn:hover { background: var(--gold); box-shadow: 0 0 32px rgba(255,215,0,0.5); }
+    .trial-policy {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      margin: 16px 0 0;
+    }
+    .trial-policy a { color: var(--orange); border-bottom: 1px solid var(--orange); text-decoration: none; }
+    .trial-success { text-align: center; padding: 24px 0; }
+    .trial-success-mark {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 4rem;
+      color: var(--orange);
+      line-height: 1;
+      margin-bottom: 20px;
+      text-shadow: 0 0 24px var(--orange-glow);
+    }
+    .trial-success h3 {
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: var(--text-light);
+      margin: 0 0 12px;
+    }
+    .trial-success p {
+      font-size: 0.96rem;
+      color: var(--text-mute);
+      line-height: 1.7;
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 進度條 -->
+  <div class="read-progress" id="readProgress" aria-hidden="true"></div>
+
+  <!-- ══ MAST ══ -->
+  <header class="masthead">
+    <div class="masthead-inner">
+      <a href="https://orangeapple.co" class="masthead-brand">
+        <img src="oappt/assets/logo-2023-white.svg" alt="橘子蘋果" class="masthead-logo">
+      </a>
+      <div class="masthead-meta">
+        <span>// THE QUEST</span>
+        <span class="masthead-meta-sep">▸</span>
+        <span>Contestant Class</span>
+        <span class="masthead-meta-sep">▸</span>
+        <span>v15 · 2026</span>
+      </div>
+      <button type="button" class="masthead-cta" data-bs-toggle="modal" data-bs-target="#trialModal" data-content-type="for-trial">
+        <span class="masthead-cta-text">[ ENTER ]</span>
+        <span>→</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════════════
+       PROLOGUE / HERO
+  ══════════════════════════════════════ -->
+  <section class="hero">
+    <div class="stars-bg" aria-hidden="true"></div>
+
+    <div class="hero-main">
+      <div>
+        <div class="hero-eyebrow-wrap">THE QUEST BEGINS · 召喚</div>
+
+        <h1 class="hero-title">
+          讓你的孩子，<br>
+          成為下一位<br>
+          <span class="glow">Contestant</span>
+        </h1>
+
+        <p class="hero-sub">
+          橘蘋選手班是一場 <strong>15 週的英雄修煉</strong>。<br>
+          已有 <strong>10 位學員</strong>通過試煉，<br>
+          從 APCS 2 級分推到滿級分，進入頂尖資科系所。
+        </p>
+
+        <div class="hero-actions">
+          <button type="button" class="hero-cta-primary" data-bs-toggle="modal" data-bs-target="#trialModal" data-content-type="for-trial">
+            <span class="key">START</span>
+            申請能力測驗體驗課
+            <span>▸</span>
+          </button>
+          <a href="#champions" class="hero-cta-secondary">
+            [ 看名人堂 ] ↓
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-emblem">
+        <div class="hero-emblem-rings">
+          <div class="hero-emblem-ring"></div>
+          <div class="hero-emblem-ring"></div>
+          <div class="hero-emblem-ring"></div>
+        </div>
+        <div class="hero-emblem-hex">
+          <div class="hero-emblem-hex-inner">
+            <div class="hero-emblem-lv-label">LEVEL</div>
+            <div class="hero-emblem-lv-num">??</div>
+            <div class="hero-emblem-lv-sub">YOUR CHILD</div>
+          </div>
+        </div>
+        <span class="hero-emblem-tag t1">▸ READY</span>
+        <span class="hero-emblem-tag t2">▸ AWAITING TRIAL</span>
+        <span class="hero-emblem-tag t3">▸ CLASS: ?</span>
+      </div>
+    </div>
+
+    <div class="hero-bottom">
+      <div class="hero-stat-cell">
+        <span class="hero-stat-num">15</span>
+        <span class="hero-stat-label">週<br>WEEKS</span>
+      </div>
+      <div class="hero-stat-cell">
+        <span class="hero-stat-num">12</span>
+        <span class="hero-stat-label">人小班<br>PARTY SIZE</span>
+      </div>
+      <div class="hero-stat-cell">
+        <span class="hero-stat-num">8</span>
+        <span class="hero-stat-label">場 BOSS 戰<br>BOSSES</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       01 / THE STRUGGLE
+  ══════════════════════════════════════ -->
+  <section class="chapter" id="struggle">
+    <div class="container-narrow">
+      <div class="chapter-header">
+        <span class="chapter-num">01 / 12</span>
+        <span class="chapter-name">THE STRUGGLE</span>
+        <span class="chapter-tag">困境</span>
+      </div>
+
+      <h2 class="epic-headline">
+        為什麼會寫程式，<br>
+        卻打不贏<span class="accent">每一場 BOSS</span>？
+      </h2>
+      <p class="epic-lede" style="margin-bottom: 56px;">
+        孩子上完基礎程式課之後，往往卡在「會寫但拿不到分」的瓶頸。<br>
+        差別不在「會不會」，而在於 <strong>有沒有人帶、有沒有題目、有沒有實戰</strong>。
+      </p>
+
+      <ol class="struggle-list" style="list-style: none; padding: 0;">
+        <li class="struggle-item">
+          <div class="struggle-mark">
+            <span class="struggle-mark-num">01</span>
+            STRUGGLE
+          </div>
+          <div class="struggle-bad">
+            <div class="struggle-tag">✕ BAD ENDING</div>
+            <h3 class="struggle-title">獨自刷題沒方向</h3>
+            <p class="struggle-desc">花了 100 小時在 zerojudge 隨機刷題，APCS 級分還是 2 級。沒人幫 review，不知道進步在哪裡。</p>
+          </div>
+          <div class="struggle-divider"></div>
+          <div class="struggle-good">
+            <div class="struggle-tag">→ TRUE ENDING</div>
+            <h3 class="struggle-title">教練帶你練對題型</h3>
+            <p class="struggle-desc">15 週循序漸進，每週題目對應檢定時程。綠茶老師 code review，每一小時都有累積。</p>
+          </div>
+        </li>
+        <li class="struggle-item">
+          <div class="struggle-mark">
+            <span class="struggle-mark-num">02</span>
+            STRUGGLE
+          </div>
+          <div class="struggle-bad">
+            <div class="struggle-tag">✕ BAD ENDING</div>
+            <h3 class="struggle-title">只會語法不會演算法</h3>
+            <p class="struggle-desc">寫得出程式，但 sub-tasks 拿不滿、資料量一大就 TLE。卡在 2-3 級分上不去。</p>
+          </div>
+          <div class="struggle-divider"></div>
+          <div class="struggle-good">
+            <div class="struggle-tag">→ TRUE ENDING</div>
+            <h3 class="struggle-title">看到題目就知道用哪招</h3>
+            <p class="struggle-desc">學會 3 大領域 + 8 項程式核心技巧（資料結構、動態規劃、圖論、樹狀圖等），從 2 推到 5 級分。</p>
+          </div>
+        </li>
+        <li class="struggle-item">
+          <div class="struggle-mark">
+            <span class="struggle-mark-num">03</span>
+            STRUGGLE
+          </div>
+          <div class="struggle-bad">
+            <div class="struggle-tag">✕ BAD ENDING</div>
+            <h3 class="struggle-title">沒實戰經驗 臨場失常</h3>
+            <p class="struggle-desc">時間壓力、未知題型、考場環境。平常解得出來，正式 APCS 卻拿不到分。</p>
+          </div>
+          <div class="struggle-divider"></div>
+          <div class="struggle-good">
+            <div class="struggle-tag">→ TRUE ENDING</div>
+            <h3 class="struggle-title">每月參賽養成肌肉記憶</h3>
+            <p class="struggle-desc">兩個月一次小比賽、15 堂內一次大比賽。真實上場累積履歷與心理素質。</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       02 / CHAMPION SPOTLIGHT
+  ══════════════════════════════════════ -->
+  <section class="chapter" id="spotlight" style="background: var(--bg-dark-2);">
+    <div class="container-wide">
+      <div class="chapter-header">
+        <span class="chapter-num">02 / 12</span>
+        <span class="chapter-name">CHAMPION SPOTLIGHT</span>
+        <span class="chapter-tag">指揮官介紹</span>
+      </div>
+
+      <h2 class="epic-headline" style="margin-bottom: 40px;">
+        他已經<span class="accent">通關了</span>。<br>
+        Player profile, 林鼎陽。
+      </h2>
+
+      <div class="champion-card">
+        <div class="champion-card-head">
+          <span>// PLAYER PROFILE · 第 8 期</span>
+          <span class="champion-card-head-tier">
+            <span class="tier tier-legendary">LEGENDARY</span>
+          </span>
+        </div>
+
+        <div class="champion-card-grid">
+          <div class="champion-portrait">
+            <div class="champion-avatar">
+              <div class="champion-avatar-inner">
+                <img src="assets/B-champion-lin.png" alt="林鼎陽 角色立繪" loading="lazy">
+              </div>
+            </div>
+            <h3 class="champion-name">林鼎陽</h3>
+            <span class="champion-class">CLASS · ALGORITHM MASTER</span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--orange); letter-spacing: 2px;">LV. MAX</span>
+          </div>
+
+          <div class="champion-body">
+            <div class="champion-body-section">
+              <div class="champion-section-label">▸ STATS · 戰鬥屬性</div>
+              <div class="champion-stat-bar">
+                <span class="champion-stat-name">APCS 觀念</span>
+                <div class="champion-stat-bar-track"><div class="champion-stat-bar-fill" data-fill="100"></div></div>
+                <span class="champion-stat-value">5 / 5</span>
+              </div>
+              <div class="champion-stat-bar">
+                <span class="champion-stat-name">APCS 實作</span>
+                <div class="champion-stat-bar-track"><div class="champion-stat-bar-fill" data-fill="100"></div></div>
+                <span class="champion-stat-value">5 / 5</span>
+              </div>
+              <div class="champion-stat-bar">
+                <span class="champion-stat-name">演算法</span>
+                <div class="champion-stat-bar-track"><div class="champion-stat-bar-fill" data-fill="100"></div></div>
+                <span class="champion-stat-value">MAX</span>
+              </div>
+            </div>
+
+            <div class="champion-body-section">
+              <div class="champion-section-label">▸ ACHIEVEMENTS · 戰績</div>
+              <div class="champion-meta-row">
+                <span class="hud-chip">APCS 雙 5</span>
+                <span class="hud-chip">ITSA 認證</span>
+                <span class="hud-chip">頂尖資工系所</span>
+              </div>
+            </div>
+
+            <div class="champion-body-section">
+              <div class="champion-section-label">▸ TESTIMONY · 自述</div>
+              <p class="champion-quote">「進選手班的 15 週，是我從 2 級分推到滿級分的關鍵轉折點。」</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="champion-more">→ 還有 9 位英雄通關紀錄，見 <a href="#champions">第 09 章 HALL OF CHAMPIONS</a></p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       03 / THE GUILD
+  ══════════════════════════════════════ -->
+  <section class="chapter" id="guild">
+    <div class="container-wide">
+      <div class="chapter-header">
+        <span class="chapter-num">03 / 12</span>
+        <span class="chapter-name">THE GUILD</span>
+        <span class="chapter-tag">公會介紹</span>
+      </div>
+
+      <div class="guild-banner">
+        <div class="guild-banner-crest">
+          <div class="guild-banner-crest-inner">OA</div>
+        </div>
+        <div class="guild-banner-name">// ORANGE APPLE GUILD · 招募公告</div>
+        <h3 class="guild-banner-title">橘子蘋果選手公會</h3>
+        <p class="guild-banner-sub">自 2012 年成立 · 培育 100,000+ 學員 · 嚴格訓練、實戰升學</p>
+      </div>
+
+      <div class="guild-rules">
+        <div class="guild-rule">
+          <div class="guild-rule-num">▸ RULE 01 · ASSESSMENT</div>
+          <h4 class="guild-rule-title">入會須通過<br>能力測驗體驗課</h4>
+          <p class="guild-rule-body">第一堂為入班測驗，老師現場觀察 + 課後完整評估報告，確認程度是否適合。沒有經過評估的學員不入會。</p>
+        </div>
+        <div class="guild-rule">
+          <div class="guild-rule-num">▸ RULE 02 · DIFFERENTIATION</div>
+          <h4 class="guild-rule-title">差異化分級訓練<br>初級 / 成長 / 進階</h4>
+          <p class="guild-rule-body">依學生程度分 3 級。每位選手都在自己的步調上進步，不會被拖慢、也不會跟不上。每週的題目對應你的等級。</p>
+        </div>
+        <div class="guild-rule">
+          <div class="guild-rule-num">▸ RULE 03 · DOCUMENTATION</div>
+          <h4 class="guild-rule-title">每場戰役<br>必須撰寫戰報</h4>
+          <p class="guild-rule-body">解題後撰寫 HackMD 文章，訓練 code review、邏輯表達。這些文章就是孩子日後申請資科系的硬實力證明。</p>
+        </div>
+        <div class="guild-rule">
+          <div class="guild-rule-num">▸ RULE 04 · ELIMINATION</div>
+          <h4 class="guild-rule-title">嚴格的淘汰機制<br>維持公會訓練強度</h4>
+          <p class="guild-rule-body">連續三次缺課、累積請假五堂、三個月未參賽，建議退出。看似嚴格，但這是為了保護其他選手的訓練品質。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       04 / THE MENTOR
+  ══════════════════════════════════════ -->
+  <section class="chapter" id="mentor" style="background: var(--bg-dark-2);">
+    <div class="container-wide">
+      <div class="chapter-header">
+        <span class="chapter-num">04 / 12</span>
+        <span class="chapter-name">THE MENTOR</span>
+        <span class="chapter-tag">導師角色卡</span>
+      </div>
+
+      <h2 class="epic-headline" style="margin-bottom: 48px;">
+        遇見你的<span class="accent">導師</span>。
+      </h2>
+
+      <div class="mentor-card">
+        <div class="mentor-portrait">
+          <div class="mentor-avatar"><img src="assets/C-mentor.png" alt="綠茶老師 NPC 立繪" loading="lazy"></div>
+          <h3 class="mentor-name">綠茶 老師</h3>
+          <span class="mentor-class">▸ CLASS · 演算法導師</span>
+          <span class="mentor-level">LV. 99 · ALGORITHM</span>
+        </div>
+        <div class="mentor-body">
+          <div class="mentor-section">
+            <div class="mentor-section-label">▸ BACKGROUND · 學經歷</div>
+            <ul>
+              <li>台師大資工所畢、台大資工博士班</li>
+              <li>15 年以上程式設計經驗</li>
+              <li>業界演算法工程師 · 系統專案製作</li>
+              <li>大學「資料結構」「演算法」課程助教</li>
+              <li>TOI 程式設計競賽地區預賽命題</li>
+            </ul>
+          </div>
+
+          <div class="mentor-section">
+            <div class="mentor-section-label">▸ SKILLS · 教練專長</div>
+            <div class="mentor-skills">
+              <span class="hud-chip">Code Review</span>
+              <span class="hud-chip">演算法精通</span>
+              <span class="hud-chip">競賽輔導</span>
+              <span class="hud-chip">客製化訓練</span>
+            </div>
+          </div>
+
+          <div class="mentor-section">
+            <div class="mentor-section-label">▸ PHILOSOPHY · 教學理念</div>
+            <p class="body-text" style="margin: 0; color: var(--text-glow);">「老師個人能力強不算強，能培育學生讓更多學生變強，<strong>打開競賽的窄門</strong>，這才是真正的教練。」</p>
+          </div>
+        </div>
+      </div>
+
+      <p style="text-align: center; margin-top: 40px; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; letter-spacing: 1.5px; color: var(--text-dim); text-transform: uppercase;">
+        + 班主任 VINA 老師 · 出席 / 請假 / 競賽報名提醒
+      </p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       05 / SKILL TREE
+  ══════════════════════════════════════ -->
+  <section class="chapter" id="skilltree">
+    <div class="container-wide">
+      <div class="chapter-header">
+        <span class="chapter-num">05 / 12</span>
+        <span class="chapter-name">SKILL TREE</span>
+        <span class="chapter-tag">技能樹</span>
+      </div>
+
+      <h2 class="epic-headline" style="margin-bottom: 16px;">
+        15 週 解鎖的<br>
+        <span class="accent">5 大核心技能</span>。
+      </h2>
+      <p class="epic-lede" style="margin-bottom: 64px;">
+        三大領域（基礎語法 / 資料結構 / 演算法）× 八項程式核心技巧。<br>
+        <strong>中央節點「應用演算法」是 APCS 級分差距的關鍵</strong>。
+      </p>
+
+      <div class="skill-tree">
+        <svg class="skill-lines" preserveAspectRatio="none" viewBox="0 0 100 100">
+          <line x1="50" y1="50" x2="22" y2="18" />
+          <line x1="50" y1="50" x2="78" y2="18" />
+          <line x1="50" y1="50" x2="22" y2="82" />
+          <line x1="50" y1="50" x2="78" y2="82" />
+        </svg>
+
+        <div class="skill-node pos-tl">
+          <div class="skill-node-hex">
+            <span class="skill-node-num">SKILL 01</span>
+            <span class="skill-node-name">資料結構</span>
+            <span class="skill-node-tag">堆疊 / 佇列 / 樹</span>
+          </div>
+        </div>
+
+        <div class="skill-node pos-tr">
+          <div class="skill-node-hex">
+            <span class="skill-node-num">SKILL 03</span>
+            <span class="skill-node-name">程式效能</span>
+            <span class="skill-node-tag">Big-O / TLE 避免</span>
+          </div>
+        </div>
+
+        <div class="skill-node pos-center core">
+          <div class="skill-node-hex">
+            <span class="skill-node-num">★ CORE</span>
+            <span class="skill-node-name">應用演算法</span>
+            <span class="skill-node-tag">DP / 圖論 / 遞迴</span>
+          </div>
+        </div>
+
+        <div class="skill-node pos-bl">
+          <div class="skill-node-hex">
+            <span class="skill-node-num">SKILL 04</span>
+            <span class="skill-node-name">解題工具</span>
+            <span class="skill-node-tag">題型分析 / IDE</span>
+          </div>
+        </div>
+
+        <div class="skill-node pos-br">
+          <div class="skill-node-hex">
+            <span class="skill-node-num">SKILL 05</span>
+            <span class="skill-node-name">競賽實戰</span>
+            <span class="skill-node-tag">APCS / TOI / CPE</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       06 / DAILY ROUTINE — Quest log
+  ══════════════════════════════════════ -->
+  <section class="chapter" id="routine" style="background: var(--bg-dark-2);">
+    <div class="container-wide">
+      <div class="chapter-header">
+        <span class="chapter-num">06 / 12</span>
+        <span class="chapter-name">DAILY ROUTINE</span>
+        <span class="chapter-tag">每日修煉排程</span>
+      </div>
+
+      <h2 class="epic-headline" style="margin-bottom: 24px;">
+        每堂 2 小時，<br>
+        <span class="accent">10 個任務</span>。
+      </h2>
+      <p class="epic-lede" style="margin-bottom: 48px;">
+        每堂 2 小時的設計：前半段解題訓練、後半段主題深化。<br>每堂課後撰寫解題文章，每月對應當期競賽。
+      </p>
+
+      <!-- 15 週旅程地圖 -->
+      <div class="journey-map" aria-label="15 週闖關旅程地圖">
+        <img src="assets/I-map.png" alt="15 週闖關旅程地圖" loading="lazy">
+        <div class="journey-map-caption">
+          <span class="journey-map-tag">▸ WORLD MAP · 15 WEEKS</span>
+          <p class="journey-map-text">起點是<strong>程式基礎村</strong>，路上會穿越演算法森林、資料結構峽谷，最終抵達<strong>競賽王城</strong>。每一週都是一段旅程。</p>
+        </div>
+      </div>
+
+      <div class="quest-log">
+        <div class="quest-phase">
+          <div class="quest-phase-head">
+            <div>
+              <div class="quest-phase-label">▸ PHASE 01 · 解題訓練</div>
+              <h3 class="quest-phase-title">前 60 分鐘</h3>
+            </div>
+            <span class="quest-phase-time">00:00 — 01:00</span>
+          </div>
+          <ol class="quest-list">
+            <li class="quest-item">
+              <span class="quest-check">✓</span>
+              <span class="quest-name"><strong>題目分析</strong> — 讀懂題意、判斷類型</span>
+              <span class="quest-xp">+5 XP</span>
+            </li>
+            <li class="quest-item">
+              <span class="quest-check">✓</span>
+              <span class="quest-name"><strong>演算法設計</strong> — 選擇對應的方法</span>
+              <span class="quest-xp">+10 XP</span>
+            </li>
+            <li class="quest-item">
+              <span class="quest-check">✓</span>
+              <span class="quest-name"><strong>撰寫程式</strong> — 實作 + 測資驗證</span>
+              <span class="quest-xp">+10 XP</span>
+            </li>
+            <li class="quest-item">
+              <span class="quest-check">✓</span>
+              <span class="quest-name"><strong>教練 review</strong> — 老師檢視程式碼結構</span>
+              <span class="quest-xp">+15 XP</span>
+            </li>
+            <li class="quest-item">
+              <span class="quest-check">✓</span>
+              <span class="quest-name"><strong>寫解題文章</strong> — HackMD 記錄思路</span>
+              <span class="quest-xp">+10 XP</span>
+            </li>
+          </ol>
+        </div>
+
+        <div class="quest-phase">
+          <div class="quest-phase-head">
+            <div>
+              <div class="quest-phase-label">▸ PHASE 02 · 主題深化</div>
+              <h3 class="quest-phase-title">後 60 分鐘</h3>
+            </div>
+            <span class="quest-phase-time">01:00 — 02:00</span>
+          </div>
+          <ol class="quest-list">
+            <li class="quest-item">
+              <span class="quest-check">✓</span>
+              <span class="quest-name"><strong>主題講解</strong> — 該週演算法原理</span>
+              <span class="quest-xp">+5 XP</span>
+            </li>
+            <li class="quest-item">
+              <span class="quest-check">✓</span>
+              <span class="quest-name"><strong>複雜度分析</strong> — 為什麼用這招</span>
+              <span class="quest-xp">+10 XP</span>
+            </li>
+            <li class="quest-item">
+              <span class="quest-check">✓</span>
+              <span class="quest-name"><strong>同學討論</strong> — 交流不同解法</span>
+              <span class="quest-xp">+5 XP</span>
+            </li>
+            <li class="quest-item">
+              <span class="quest-check">✓</span>
+              <span class="quest-name"><strong>班級小比賽</strong> — 當週限時挑戰</span>
+              <span class="quest-xp">+20 XP</span>
+            </li>
+            <li class="quest-item">
+              <span class="quest-check">✓</span>
+              <span class="quest-name"><strong>月競賽參賽</strong> — 對應當月檢定</span>
+              <span class="quest-xp">+50 XP</span>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       07 / CLASS REQUIREMENTS
+  ══════════════════════════════════════ -->
+  <section class="chapter" id="requirements">
+    <div class="container-wide">
+      <div class="chapter-header">
+        <span class="chapter-num">07 / 12</span>
+        <span class="chapter-name">CLASS REQUIREMENTS</span>
+        <span class="chapter-tag">職業適性</span>
+      </div>
+
+      <h2 class="epic-headline" style="margin-bottom: 24px;">
+        你的孩子<br>
+        <span class="accent">能加入這個公會嗎</span>？
+      </h2>
+      <p class="epic-lede" style="margin-bottom: 56px;">
+        選手班是高強度的競賽訓練班，<strong>不是基礎程式課</strong>。<br>孩子必須有程式基礎、想拚 APCS 級分、願意接受嚴格的訓練節奏。
+      </p>
+
+      <div class="req-grid">
+        <div class="req-col req-col-yes">
+          <div class="req-col-label">▸ ELIGIBLE · 適合入會</div>
+          <h3 class="req-col-title">符合任一即建議申請測驗</h3>
+          <ul class="req-list">
+            <li><span>7 年級以上，已有程式基礎（APCS 2 級分以上或修畢橘蘋進階班）</span></li>
+            <li><span>想拚 APCS 4-5 級分、想參加 TOI / CPE / NPSC 等競賽的孩子</span></li>
+            <li><span>有強烈自主學習動機，遇到難題願意自己卡很久才問</span></li>
+            <li><span>想透過程式競賽累積升學履歷（資訊類學群）</span></li>
+            <li><span>願意每月參加至少一次競賽、寫解題文章記錄</span></li>
+          </ul>
+        </div>
+        <div class="req-col req-col-no">
+          <div class="req-col-label">✕ MISMATCH · 暫不適合</div>
+          <h3 class="req-col-title">建議先上其他基礎課程</h3>
+          <ul class="req-list">
+            <li><span>還沒上過任何程式課、零基礎（建議先上橘蘋 Python 或 APCS 培訓班）</span></li>
+            <li><span>無法接受「兩個月一次小比賽、15 堂內一次大比賽」的參賽要求</span></li>
+            <li><span>不願意撰寫解題文章、記錄解題過程</span></li>
+            <li><span>學校課業已很滿、無法每週投入額外練題時間</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       08 / BOSS LIST
+  ══════════════════════════════════════ -->
+  <section class="chapter" id="bosses" style="background: var(--bg-dark-2);">
+    <div class="container-wide">
+      <div class="chapter-header">
+        <span class="chapter-num">08 / 12</span>
+        <span class="chapter-name">BOSS LIST</span>
+        <span class="chapter-tag">全年 8 場 BOSS 戰</span>
+      </div>
+
+      <div class="chapter-banner banner-battle" aria-hidden="true"></div>
+
+      <h2 class="epic-headline" style="margin-bottom: 24px;">
+        全年 8 場<br>
+        <span class="accent">BOSS 戰路線</span>。
+      </h2>
+      <p class="epic-lede" style="margin-bottom: 56px;">
+        每場 BOSS 都有<strong>難度等級、出沒月份、攻略要點</strong>。<br>
+        課程主題依當月 BOSS 動態調整，每次練習都對應到真實戰場。
+      </p>
+
+      <div class="boss-grid">
+        <div class="boss-card">
+          <span class="tier tier-rare boss-tier">RARE</span>
+          <div class="boss-portrait"><img src="assets/D1-apcs.png" alt="APCS Boss · The Gatekeeper" loading="lazy"></div>
+          <h3 class="boss-name">APCS</h3>
+          <div class="boss-name-en">大學程式檢定 · 個人賽</div>
+          <dl class="boss-stats">
+            <dt>難度</dt><dd class="diff">★★★★☆</dd>
+            <dt>月份</dt><dd>1 / 6 / 10 月</dd>
+            <dt>類型</dt><dd>SOLO</dd>
+          </dl>
+          <p class="boss-strategy"><strong>主戰場</strong>。觀念題 + 實作題，級分為升學特殊選材入門檻。</p>
+        </div>
+
+        <div class="boss-card">
+          <span class="tier tier-rare boss-tier">RARE</span>
+          <div class="boss-portrait"><img src="assets/D2-cpe.png" alt="CPE Boss · The Swift Blade" loading="lazy"></div>
+          <h3 class="boss-name">CPE</h3>
+          <div class="boss-name-en">大學程式能力檢定 · 個人賽</div>
+          <dl class="boss-stats">
+            <dt>難度</dt><dd class="diff">★★★★☆</dd>
+            <dt>月份</dt><dd>3 / 5 / 10 / 12</dd>
+            <dt>類型</dt><dd>SOLO</dd>
+          </dl>
+          <p class="boss-strategy">考驗演算法應用與解題速度。中級→進階級遞進挑戰。</p>
+        </div>
+
+        <div class="boss-card">
+          <span class="tier tier-epic boss-tier">EPIC</span>
+          <div class="boss-portrait"><img src="assets/D3-toi.png" alt="TOI Boss · The Crystal Dragon" loading="lazy"></div>
+          <h3 class="boss-name">TOI</h3>
+          <div class="boss-name-en">國際資訊奧林匹亞 · 個人賽</div>
+          <dl class="boss-stats">
+            <dt>難度</dt><dd class="diff">★★★★★</dd>
+            <dt>月份</dt><dd>2-3 月初選</dd>
+            <dt>類型</dt><dd>SOLO</dd>
+          </dl>
+          <p class="boss-strategy">頂尖選手競技場。難度最高、含金量最大。</p>
+        </div>
+
+        <div class="boss-card">
+          <span class="tier tier-rare boss-tier">RARE</span>
+          <div class="boss-portrait"><img src="assets/D4-itsa.png" alt="ITSA Boss · The Shield Sentinel" loading="lazy"></div>
+          <h3 class="boss-name">ITSA</h3>
+          <div class="boss-name-en">程式能力線上自我評量</div>
+          <dl class="boss-stats">
+            <dt>難度</dt><dd class="diff">★★★☆☆</dd>
+            <dt>月份</dt><dd>偶數月</dd>
+            <dt>類型</dt><dd>SOLO</dd>
+          </dl>
+          <p class="boss-strategy">線上練習、累積成就，獲取程式能力認證。</p>
+        </div>
+
+        <div class="boss-card">
+          <span class="tier tier-epic boss-tier">EPIC</span>
+          <div class="boss-portrait"><img src="assets/D5-npsc.png" alt="NPSC Boss · The Storm Beast" loading="lazy"></div>
+          <h3 class="boss-name">NPSC</h3>
+          <div class="boss-name-en">網際網路程式設計全國大賽</div>
+          <dl class="boss-stats">
+            <dt>難度</dt><dd class="diff">★★★★★</dd>
+            <dt>月份</dt><dd>12 月</dd>
+            <dt>類型</dt><dd>TEAM</dd>
+          </dl>
+          <p class="boss-strategy">需校內指導老師帶隊。全國級團隊賽，履歷高含金量。</p>
+        </div>
+
+        <div class="boss-card">
+          <span class="tier tier-epic boss-tier">EPIC</span>
+          <div class="boss-portrait"><img src="assets/D6-issc.png" alt="ISSC Boss · The Flame Phoenix" loading="lazy"></div>
+          <h3 class="boss-name">ISSC</h3>
+          <div class="boss-name-en">青年程式設計競賽</div>
+          <dl class="boss-stats">
+            <dt>難度</dt><dd class="diff">★★★★☆</dd>
+            <dt>月份</dt><dd>10-12 月</dd>
+            <dt>類型</dt><dd>TEAM</dd>
+          </dl>
+          <p class="boss-strategy">校隊參賽。全國級競賽，10-12 月集中爆發。</p>
+        </div>
+
+        <div class="boss-card">
+          <span class="tier tier-legendary boss-tier">LEGENDARY</span>
+          <div class="boss-portrait"><img src="assets/D7-final-boss.png" alt="資訊學科能力競賽 · The Crowned Demon Lord" loading="lazy"></div>
+          <h3 class="boss-name">資訊學科<br>能力競賽</h3>
+          <div class="boss-name-en">校隊賽 · 全國級</div>
+          <dl class="boss-stats">
+            <dt>難度</dt><dd class="diff">★★★★★</dd>
+            <dt>月份</dt><dd>9-12 月</dd>
+            <dt>類型</dt><dd>TEAM</dd>
+          </dl>
+          <p class="boss-strategy"><strong>頂級 BOSS</strong>。校隊代表全國競技。複賽 + 決賽兩階段。</p>
+        </div>
+
+        <div class="boss-card">
+          <span class="tier tier-common boss-tier">COMMON</span>
+          <div class="boss-portrait"><img src="assets/D8-training.png" alt="線上練習賽 · The Training Machine" loading="lazy"></div>
+          <h3 class="boss-name">線上練習賽</h3>
+          <div class="boss-name-en">TOI / Codeforces / AtCoder</div>
+          <dl class="boss-stats">
+            <dt>難度</dt><dd class="diff">★★☆☆☆</dd>
+            <dt>月份</dt><dd>全年</dd>
+            <dt>類型</dt><dd>SOLO</dd>
+          </dl>
+          <p class="boss-strategy">日常練習場。培養手感、累積比賽肌肉記憶。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       09 / HALL OF CHAMPIONS — 米白呼吸區
+  ══════════════════════════════════════ -->
+  <section class="chapter chapter-light" id="champions">
+    <div class="container-wide">
+      <div class="chapter-header">
+        <span class="chapter-num">09 / 12</span>
+        <span class="chapter-name">HALL OF CHAMPIONS</span>
+        <span class="chapter-tag">名人堂</span>
+      </div>
+
+      <div class="chapter-banner banner-guild" aria-hidden="true"></div>
+
+      <h2 class="epic-headline" style="margin-bottom: 24px;">
+        他們<span class="accent">通關了</span>。<br>
+        你的孩子，是下一位嗎？
+      </h2>
+      <p class="epic-lede" style="margin-bottom: 56px;">
+        橘蘋選手班歷屆學員真實成績與升學系所。<br>
+        每一位都是從 APCS 2-3 級分起步，透過系統訓練到競賽得獎、升學資科系。
+      </p>
+
+      <div class="champions-top">
+        <div class="champ-card">
+          <span class="tier tier-legendary champ-tier">LEGENDARY</span>
+          <div class="champ-hex"><img src="assets/E1-lin.png" alt="林鼎陽" loading="lazy"></div>
+          <h3 class="champ-name">林鼎陽</h3>
+          <span class="champ-score">APCS 5 / 5</span>
+          <p class="champ-school empty">頂尖資工系所</p>
+          <p class="champ-note">滿級分代表 · 觀念+實作雙 5</p>
+        </div>
+        <div class="champ-card">
+          <span class="tier tier-legendary champ-tier">LEGENDARY</span>
+          <div class="champ-hex"><img src="assets/E2-ju.png" alt="鞠坤達" loading="lazy"></div>
+          <h3 class="champ-name">鞠坤達</h3>
+          <span class="champ-score">APCS 5 / 4 · ITSA</span>
+          <p class="champ-school empty">—</p>
+          <p class="champ-note">觀念 5 級 + ITSA 認證</p>
+        </div>
+        <div class="champ-card">
+          <span class="tier tier-epic champ-tier">EPIC</span>
+          <div class="champ-hex"><img src="assets/E3-cheng.png" alt="鄭睿宏" loading="lazy"></div>
+          <h3 class="champ-name">鄭睿宏</h3>
+          <span class="champ-score">APCS 4 / 3 · CPE 進階</span>
+          <p class="champ-school">政大資科</p>
+          <p class="champ-note">HP CodeWar 得獎</p>
+        </div>
+        <div class="champ-card">
+          <span class="tier tier-epic champ-tier">EPIC</span>
+          <div class="champ-hex"><img src="assets/E4-chou.png" alt="周子馨" loading="lazy"></div>
+          <h3 class="champ-name">周子馨</h3>
+          <span class="champ-score">APCS 4 / 3 · CPE 中級</span>
+          <p class="champ-school">北大資科</p>
+          <p class="champ-note">HP CodeWar 得獎</p>
+        </div>
+        <div class="champ-card">
+          <span class="tier tier-epic champ-tier">EPIC</span>
+          <div class="champ-hex"><img src="assets/E5-huang.png" alt="黃戎瑍" loading="lazy"></div>
+          <h3 class="champ-name">黃戎瑍</h3>
+          <span class="champ-score">APCS 4 / 3 · CPE 中級</span>
+          <p class="champ-school">中原資工</p>
+          <p class="champ-note">校內資訊代表</p>
+        </div>
+        <div class="champ-card">
+          <span class="tier tier-rare champ-tier">RARE</span>
+          <div class="champ-hex"><img src="assets/E6-chen.png" alt="陳柏宇" loading="lazy"></div>
+          <h3 class="champ-name">陳柏宇</h3>
+          <span class="champ-score">特殊選材</span>
+          <p class="champ-school">逢甲資工</p>
+          <p class="champ-note">破格錄取</p>
+        </div>
+      </div>
+
+      <div class="leaderboard">
+        <div class="leaderboard-head">
+          <div>RANK</div>
+          <div>NAME</div>
+          <div>SCORE</div>
+          <div>SCHOOL</div>
+          <div>NOTE</div>
+        </div>
+        <div class="leaderboard-row">
+          <div class="leaderboard-rank">#07</div>
+          <div class="leaderboard-name">劉柏岑</div>
+          <div class="leaderboard-score">APCS 4 / 3</div>
+          <div class="leaderboard-school empty">—</div>
+          <div class="leaderboard-note">—</div>
+        </div>
+        <div class="leaderboard-row">
+          <div class="leaderboard-rank">#08</div>
+          <div class="leaderboard-name">康皓翔</div>
+          <div class="leaderboard-score">APCS 4 / 3 · ITSA</div>
+          <div class="leaderboard-school empty">—</div>
+          <div class="leaderboard-note">ITSA 認證</div>
+        </div>
+        <div class="leaderboard-row">
+          <div class="leaderboard-rank">#09</div>
+          <div class="leaderboard-name">邱翊逢</div>
+          <div class="leaderboard-score">APCS 3 / 3</div>
+          <div class="leaderboard-school empty">—</div>
+          <div class="leaderboard-note">—</div>
+        </div>
+        <div class="leaderboard-row">
+          <div class="leaderboard-rank">#10</div>
+          <div class="leaderboard-name">陳柏鈞</div>
+          <div class="leaderboard-score">ITSA</div>
+          <div class="leaderboard-school empty">—</div>
+          <div class="leaderboard-note">資訊能力競賽校內第一</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       10 / LOOT TABLE
+  ══════════════════════════════════════ -->
+  <section class="chapter" id="loot">
+    <div class="container-wide">
+      <div class="chapter-header">
+        <span class="chapter-num">10 / 12</span>
+        <span class="chapter-name">LOOT TABLE</span>
+        <span class="chapter-tag">戰利品清單</span>
+      </div>
+
+      <h2 class="epic-headline" style="margin-bottom: 24px;">
+        通關 15 週，<br>
+        <span class="accent">你會獲得這些戰利品</span>。
+      </h2>
+      <p class="epic-lede" style="margin-bottom: 56px;">
+        每件戰利品都對應到升學履歷上的<strong>硬實力證明</strong>。<br>
+        不只是「會寫程式」，是真實可量化的成就。
+      </p>
+
+      <div class="loot-grid">
+        <div class="loot-card lc-gold">
+          <div class="loot-tier-row">
+            <div class="loot-icon li-square"><img src="assets/F1-loot-legendary.png" alt="LEGENDARY loot · 金杯" loading="lazy"></div>
+            <span class="tier tier-legendary">LEGENDARY</span>
+          </div>
+          <h3 class="loot-name">APCS 4-5 級分</h3>
+          <p class="loot-desc">觀念 + 實作雙高分。是多數資科系特殊選材的入門檻。歷屆學員實證有 2 位達 5 級滿分。</p>
+        </div>
+        <div class="loot-card lc-pink">
+          <div class="loot-tier-row">
+            <div class="loot-icon li-hex"><img src="assets/F2a-loot-cpe.png" alt="EPIC loot · CPE 雙劍認證徽章" loading="lazy"></div>
+            <span class="tier tier-epic">EPIC</span>
+          </div>
+          <h3 class="loot-name">CPE 中 / 進階級</h3>
+          <p class="loot-desc">大學程式能力檢定認證。中級到進階級可作為大學階段程式能力證明。</p>
+        </div>
+        <div class="loot-card lc-violet">
+          <div class="loot-tier-row">
+            <div class="loot-icon li-octa"><img src="assets/F2b-loot-contest.png" alt="EPIC loot · 競賽戰旗 + 羽毛筆" loading="lazy"></div>
+            <span class="tier tier-epic">EPIC</span>
+          </div>
+          <h3 class="loot-name">競賽參賽紀錄</h3>
+          <p class="loot-desc">TOI / NPSC / ISSC / 資訊學科能力競賽等全國級參賽履歷。學習歷程的硬實力證明。</p>
+        </div>
+        <div class="loot-card lc-blue">
+          <div class="loot-tier-row">
+            <div class="loot-icon li-diamond"><img src="assets/F3a-loot-hackmd.png" alt="RARE loot · HackMD 解題卷軸" loading="lazy"></div>
+            <span class="tier tier-rare">RARE</span>
+          </div>
+          <h3 class="loot-name">HackMD 解題文章集</h3>
+          <p class="loot-desc">完整的解題思路記錄。展示思考過程，是申請文件加分項。</p>
+        </div>
+        <div class="loot-card lc-teal">
+          <div class="loot-tier-row">
+            <div class="loot-icon li-circle"><img src="assets/F3b-loot-itsa.png" alt="RARE loot · ITSA 盾牌徽章" loading="lazy"></div>
+            <span class="tier tier-rare">RARE</span>
+          </div>
+          <h3 class="loot-name">ITSA 程式能力認證</h3>
+          <p class="loot-desc">線上自我評量認證，累積成就感與程式能力證明。</p>
+        </div>
+        <div class="loot-card lc-green">
+          <div class="loot-tier-row">
+            <div class="loot-icon li-notch"><img src="assets/F3c-loot-algorithm.png" alt="RARE loot · 演算法腦核心" loading="lazy"></div>
+            <span class="tier tier-rare">RARE</span>
+          </div>
+          <h3 class="loot-name">系統性演算法基礎</h3>
+          <p class="loot-desc">資料結構、動態規劃、圖論等核心知識，未來大學 CS 課程立刻接得上。</p>
+        </div>
+      </div>
+
+      <p style="text-align: center; margin-top: 56px; font-family: 'JetBrains Mono', monospace; font-size: 0.86rem; letter-spacing: 1.5px; color: var(--text-mute); text-transform: uppercase;">
+        ▸ 歷屆學員實證升學系所：政大資科 · 北大資科 · 中原資工 · 逢甲資工（特殊選材）
+      </p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       11 / THE TRUTH
+  ══════════════════════════════════════ -->
+  <section class="chapter" id="truth" style="background: var(--bg-dark-2);">
+    <div class="container-narrow">
+      <div class="chapter-header">
+        <span class="chapter-num">11 / 12</span>
+        <span class="chapter-name">THE TRUTH</span>
+        <span class="chapter-tag">表象與真相</span>
+      </div>
+
+      <h2 class="epic-headline" style="margin-bottom: 24px;">
+        這不是刷題班，<br>
+        是<span class="accent">解題思維訓練</span>。
+      </h2>
+      <p class="epic-lede" style="margin-bottom: 56px;">
+        從外表看，孩子好像是在一直解題。<br>
+        <strong>但實際上真正在訓練的，是分析、演算法選擇、複雜度判斷、code review</strong>。
+      </p>
+
+      <div class="truth-list">
+        <div class="truth-row">
+          <div class="truth-left">解 zerojudge 100 題</div>
+          <div class="truth-arrow">→</div>
+          <div class="truth-right">看到題目就知道用哪種演算法</div>
+        </div>
+        <div class="truth-row">
+          <div class="truth-left">背遞迴 / 排序的寫法</div>
+          <div class="truth-arrow">→</div>
+          <div class="truth-right">什麼題目該用遞迴或排序</div>
+        </div>
+        <div class="truth-row">
+          <div class="truth-left">知道答案後對著抄</div>
+          <div class="truth-arrow">→</div>
+          <div class="truth-right">自己拆題目、設計演算法、優化效能</div>
+        </div>
+        <div class="truth-row">
+          <div class="truth-left">程式跑得出來就好</div>
+          <div class="truth-arrow">→</div>
+          <div class="truth-right">用 Big-O 估算複雜度、避免 TLE</div>
+        </div>
+        <div class="truth-row">
+          <div class="truth-left">自己一個人 debug</div>
+          <div class="truth-arrow">→</div>
+          <div class="truth-right">用 IDE / Debugger，有教練 review</div>
+        </div>
+        <div class="truth-row">
+          <div class="truth-left">考完忘了不會記錄</div>
+          <div class="truth-arrow">→</div>
+          <div class="truth-right">寫 HackMD 解題文章，累積升學歷程</div>
+        </div>
+      </div>
+
+      <div class="truth-quote">
+        真正的學習目標，不是孩子解過多少題；<br>
+        而是在競賽當下能<span class="accent">選對演算法、寫出能拿分的程式</span>。
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       12 / MISSION BRIEFING — 米白呼吸區
+  ══════════════════════════════════════ -->
+  <section class="chapter chapter-light" id="briefing">
+    <div class="container-wide">
+      <div class="chapter-header">
+        <span class="chapter-num">12 / 12</span>
+        <span class="chapter-name">MISSION BRIEFING</span>
+        <span class="chapter-tag">任務簡報 · Q&amp;A</span>
+      </div>
+
+      <h2 class="epic-headline" style="margin-bottom: 32px;">
+        家長最常問的<br>
+        <span class="accent">15 個問題</span>。
+      </h2>
+
+      <div class="mb-meta-bar">
+        <span>// MISSION FILE · v15</span>
+        <span><strong>15</strong> entries · classified by topic</span>
+      </div>
+
+      <div class="mb-chips">
+        <button class="mb-chip active" data-cat="content">▸ 課程內容</button>
+        <button class="mb-chip" data-cat="signup">▸ 報名實務</button>
+        <button class="mb-chip" data-cat="outcome">▸ 學習效果</button>
+        <button class="mb-chip" data-cat="all">▸ ALL</button>
+      </div>
+
+      <ol class="mb-list" data-active="content">
+
+        <li class="mb-item open" data-cat="content">
+          <div class="mb-q" onclick="this.parentElement.classList.toggle('open')">
+            <span class="mb-q-num">FILE.01</span>
+            <span class="mb-q-text">橘蘋選手班是什麼？</span>
+            <span class="mb-q-toggle">+</span>
+          </div>
+          <div class="mb-a"><div class="mb-a-inner">
+            橘蘋選手班是橘蘋為「已具備程式基礎、想進階參賽的孩子」設計的 <strong>競賽培訓專班</strong>。課程涵蓋資料結構、演算法、程式效能、解題策略與全年競賽實戰，目標是讓孩子在 <strong>APCS、CPE、TOI、NPSC</strong> 等檢定競賽中真正拿到分數、累積升學履歷。
+          </div></div>
+        </li>
+
+        <li class="mb-item" data-cat="content">
+          <div class="mb-q" onclick="this.parentElement.classList.toggle('open')">
+            <span class="mb-q-num">FILE.02</span>
+            <span class="mb-q-text">選手班只是 APCS 衝刺班嗎？</span>
+            <span class="mb-q-toggle">+</span>
+          </div>
+          <div class="mb-a"><div class="mb-a-inner">
+            <strong>不只是</strong>。APCS 是檢定，選手班的訓練範圍更廣：除了 APCS 觀念 + 實作之外，還包含 <strong>CPE、ITSA、TOI、NPSC、ISSC、資訊學科能力競賽</strong>等多項全年競賽。重點是讓孩子建立扎實的演算法基礎與解題思維，這套能力面對任何程式競賽都通用。
+          </div></div>
+        </li>
+
+        <li class="mb-item" data-cat="content">
+          <div class="mb-q" onclick="this.parentElement.classList.toggle('open')">
+            <span class="mb-q-num">FILE.03</span>
+            <span class="mb-q-text">跟一般程式班 / APCS 培訓班差在哪？</span>
+            <span class="mb-q-toggle">+</span>
+          </div>
+          <div class="mb-a"><div class="mb-a-inner">
+            一般程式班教孩子「<strong>會寫程式</strong>」，APCS 培訓班是「<strong>準備 APCS 一場檢定</strong>」。選手班是更高階的長期訓練：差異化分級 + 全年競賽路徑 + 教練 code review + 解題文章撰寫 + 淘汰機制，目標是讓孩子 <strong>從 APCS 2 級分推到 5 級分、進入資科系所</strong>。
+          </div></div>
+        </li>
+
+        <li class="mb-item" data-cat="signup">
+          <div class="mb-q" onclick="this.parentElement.classList.toggle('open')">
+            <span class="mb-q-num">FILE.04</span>
+            <span class="mb-q-text">沒參加過競賽，可以上嗎？</span>
+            <span class="mb-q-toggle">+</span>
+          </div>
+          <div class="mb-a"><div class="mb-a-inner">
+            可以，只要 <strong>有基本程式基礎</strong>（APCS 2 級分以上、或修畢橘蘋 APCS 培訓班 / 進階班）。沒有競賽經驗反而是常態 — 選手班會循序帶孩子從小比賽（線上練習賽）開始，再進階到大比賽。
+          </div></div>
+        </li>
+
+        <li class="mb-item" data-cat="signup">
+          <div class="mb-q" onclick="this.parentElement.classList.toggle('open')">
+            <span class="mb-q-num">FILE.05</span>
+            <span class="mb-q-text">幾年級適合？需要什麼基礎？</span>
+            <span class="mb-q-toggle">+</span>
+          </div>
+          <div class="mb-a"><div class="mb-a-inner">
+            建議 <strong>7 年級（國中一年級）以上</strong>。並需符合任一基礎條件：① APCS 實作題 <strong>2 級分以上（100 分以上）</strong>、② 修畢橘蘋 <strong>APCS 培訓班 / 培訓營 / 進階班</strong>、③ 對程式解題與競賽有強烈興趣，具自主學習能力（檢具其他程式能力證明，人工審核）。
+          </div></div>
+        </li>
+
+        <li class="mb-item" data-cat="signup">
+          <div class="mb-q" onclick="this.parentElement.classList.toggle('open')">
+            <span class="mb-q-num">FILE.06</span>
+            <span class="mb-q-text">需要準備什麼設備？為什麼不能用平板？</span>
+            <span class="mb-q-toggle">+</span>
+          </div>
+          <div class="mb-a"><div class="mb-a-inner">
+            設備建議：<br>
+            ✓ <strong>筆電</strong>：最理想，內建鏡頭與麥克風可直接上課<br>
+            ✓ <strong>桌電</strong>：可以，但需額外準備 <strong>耳機與麥克風</strong><br>
+            ✕ <strong>平板、平板加鍵盤、手機</strong>：不可以<br><br>
+            原因：課程中需要進行多種解題操作、code review、檔案管理，加上要與老師即時互動討論，<strong>需要鍵盤輸入、滑鼠操作、檔案管理與穩定麥克風</strong>，平板難以勝任這些需求。
+          </div></div>
+        </li>
+
+        <li class="mb-item" data-cat="outcome">
+          <div class="mb-q" onclick="this.parentElement.classList.toggle('open')">
+            <span class="mb-q-num">FILE.07</span>
+            <span class="mb-q-text">一期 15 堂下來，孩子會累積什麼成果？</span>
+            <span class="mb-q-toggle">+</span>
+          </div>
+          <div class="mb-a"><div class="mb-a-inner">
+            一期下來會累積：① 至少 <strong>1 次大比賽 / 檢定</strong>參賽紀錄、② 至少 <strong>3-5 次小比賽</strong>（線上練習賽）、③ 完整的 <strong>HackMD 解題文章作品集</strong>（升學履歷加分）、④ 系統性的演算法與資料結構基礎。
+          </div></div>
+        </li>
+
+        <li class="mb-item" data-cat="outcome">
+          <div class="mb-q" onclick="this.parentElement.classList.toggle('open')">
+            <span class="mb-q-num">FILE.08</span>
+            <span class="mb-q-text">課程強度會不會太硬？孩子吃得消嗎？</span>
+            <span class="mb-q-toggle">+</span>
+          </div>
+          <div class="mb-a"><div class="mb-a-inner">
+            選手班強度確實高於一般程式課，但採 <strong>差異化分級（初級 / 成長級 / 進階級）</strong>，每位學生會拿到適合自己程度的題目。第一堂的能力測驗就是為了精準評估強度配置。<strong>不會吃力到放棄、也不會輕鬆到沒進步</strong>，這是橘蘋的設計重點。
+          </div></div>
+        </li>
+
+        <li class="mb-item" data-cat="content">
+          <div class="mb-q" onclick="this.parentElement.classList.toggle('open')">
+            <span class="mb-q-num">FILE.09</span>
+            <span class="mb-q-text">一定要參加競賽嗎？只是想學演算法可以嗎？</span>
+            <span class="mb-q-toggle">+</span>
+          </div>
+          <div class="mb-a"><div class="mb-a-inner">
+            <strong>是的，需要參賽</strong>。選手班的設計理念是「真實上場才會真正進步」，所以要求：① 兩個月內至少參加一次 <strong>小比賽</strong>、② 15 堂課內至少要有一次 <strong>大比賽或檢定</strong>。連續三個月未參賽會建議退出。如果只想學演算法、不想參賽，建議改選一般程式進階班。
+          </div></div>
+        </li>
+
+        <li class="mb-item" data-cat="content">
+          <div class="mb-q" onclick="this.parentElement.classList.toggle('open')">
+            <span class="mb-q-num">FILE.10</span>
+            <span class="mb-q-text">上課方式是講課還是練題？比例大概多少？</span>
+            <span class="mb-q-toggle">+</span>
+          </div>
+          <div class="mb-a"><div class="mb-a-inner">
+            每堂 2 小時的分配：<strong>講師授課 + 解題實作 + code review + HackMD 文章撰寫</strong>。前半段為演算法主題講解 + 例題分析，後半段為孩子自己解題 + 老師 code review + 同學互相討論。每堂課後要撰寫 <strong>解題文章</strong>記錄思路。
+          </div></div>
+        </li>
+
+        <li class="mb-item" data-cat="signup">
+          <div class="mb-q" onclick="this.parentElement.classList.toggle('open')">
+            <span class="mb-q-num">FILE.11</span>
+            <span class="mb-q-text">缺課可以補課嗎？「淘汰機制」是什麼？</span>
+            <span class="mb-q-toggle">+</span>
+          </div>
+          <div class="mb-a"><div class="mb-a-inner">
+            <strong>有提供補課影片</strong>。但選手班為維持訓練強度，設計了 3 條淘汰機制：<br>
+            ① <strong>連續三次缺課</strong>、② <strong>累積請假五堂以上</strong>、③ <strong>三個月內未參加任何競賽</strong>，三項任一條件成立即建議退出。這是為了保護其他學生的訓練品質與時間。若孩子有特殊狀況可與班主任 Vina 老師討論。
+          </div></div>
+        </li>
+
+        <li class="mb-item" data-cat="outcome">
+          <div class="mb-q" onclick="this.parentElement.classList.toggle('open')">
+            <span class="mb-q-num">FILE.12</span>
+            <span class="mb-q-text">程式競賽對升學真的有幫助嗎？</span>
+            <span class="mb-q-toggle">+</span>
+          </div>
+          <div class="mb-a"><div class="mb-a-inner">
+            <strong>非常有幫助</strong>，特別對申請<strong>資訊學群</strong>：① <strong>APCS 級分</strong>是多數資科系特殊選材的入門檻、② <strong>競賽參賽紀錄</strong>是學習歷程的硬實力證明、③ <strong>解題文章</strong>展示思考過程，是申請文件加分項。橘蘋選手班歷屆學員已有錄取 <strong>政大資科、北大資科、中原資工、逢甲資工（特殊選材）</strong>等實績。
+          </div></div>
+        </li>
+
+        <li class="mb-item" data-cat="outcome">
+          <div class="mb-q" onclick="this.parentElement.classList.toggle('open')">
+            <span class="mb-q-num">FILE.13</span>
+            <span class="mb-q-text">沒有 APCS 經驗，能跟得上嗎？</span>
+            <span class="mb-q-toggle">+</span>
+          </div>
+          <div class="mb-a"><div class="mb-a-inner">
+            如果孩子完全沒接觸過 APCS 但有其他程式基礎（Python / C++ 等），<strong>可以</strong>，課程會從基礎演算法逐步建立。但如果<strong>連基礎程式語法都還不熟</strong>，建議先上橘蘋的 <strong>APCS 培訓班</strong>或 <strong>Python 課程</strong>累積基礎，再來上選手班會更有效率。第一堂能力測驗會幫你判斷。
+          </div></div>
+        </li>
+
+        <li class="mb-item" data-cat="signup">
+          <div class="mb-q" onclick="this.parentElement.classList.toggle('open')">
+            <span class="mb-q-num">FILE.14</span>
+            <span class="mb-q-text">第一堂「能力測驗體驗課」是什麼？要怎麼準備？</span>
+            <span class="mb-q-toggle">+</span>
+          </div>
+          <div class="mb-a"><div class="mb-a-inner">
+            選手班的第一堂課<strong>不是傳統試聽</strong>，是 <strong>能力測驗體驗課</strong>。流程：① 老師說明選手班的課程目標與規範、② 入班程式解題測驗（引導孩子理解題意 → 實際解題 → 學習教練全程觀察）、③ 測驗結束後進行程式碼檢討、演算法討論、④ 課後撰寫完整評估報告，確認該生是否適合繼續上課。<strong>不需要特別準備</strong>，帶平常的程式能力來即可。
+          </div></div>
+        </li>
+
+        <li class="mb-item" data-cat="signup">
+          <div class="mb-q" onclick="this.parentElement.classList.toggle('open')">
+            <span class="mb-q-num">FILE.15</span>
+            <span class="mb-q-text">課程退費規則？</span>
+            <span class="mb-q-toggle">+</span>
+          </div>
+          <div class="mb-a"><div class="mb-a-inner">
+            退費依 <strong>補習班相關法規</strong>計算（依出席堂數比例退還）。例如購買 15 堂課，出席未達第 6 堂前皆可申請退費；超過 1/3 後不再退款。詳細條件可在報名前由專人說明。
+          </div></div>
+        </li>
+
+      </ol>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       ENDING / FINAL CTA
+  ══════════════════════════════════════ -->
+  <section class="ending" id="cta">
+    <div class="stars-bg" aria-hidden="true"></div>
+    <div class="container-wide" style="position: relative; z-index: 2;">
+      <div class="ending-eyebrow">▸ END OF VOLUME 15 · WILL YOU ACCEPT THE QUEST?</div>
+      <h2 class="ending-headline">
+        準備好讓孩子<br>
+        <span class="glow">踏上 15 週的旅程</span>了嗎？
+      </h2>
+      <p class="ending-sub">
+        第一堂能力測驗體驗課，由橘蘋專人為孩子評估程度、規劃適合的訓練路徑。
+      </p>
+
+      <button type="button" class="ending-cta" data-bs-toggle="modal" data-bs-target="#trialModal" data-content-type="for-trial">
+        <span class="key">START</span>
+        申請能力測驗體驗課
+        <span>▸</span>
+      </button>
+
+      <div class="ending-warn">
+        <span>⚠</span>
+        <span>需通過<strong>能力測驗</strong>才能正式入會。12 人小班，<strong>額滿即停招</strong>。</span>
+      </div>
+
+      <p class="ending-sub-link">
+        — 還沒有程式基礎？建議先上 <a href="https://orangeapple.co" target="_blank" rel="noopener">橘蘋 APCS 培訓班、Python 課程或進階班 →</a> 累積基礎後再申請選手班
+      </p>
+    </div>
+  </section>
+
+  <!-- Mobile sticky CTA -->
+  <div class="mobile-sticky-cta" id="mobile-sticky-cta" aria-hidden="true">
+    <button type="button" class="mobile-sticky-btn" data-bs-toggle="modal" data-bs-target="#trialModal" data-content-type="for-trial">
+      [ START ] 申請能力測驗 ▸
+    </button>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="trialModal" tabindex="-1" aria-labelledby="trialModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content trial-modal-content">
+        <button type="button" class="trial-modal-close" data-bs-dismiss="modal" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+        <div class="trial-modal-body">
+          <div class="trial-modal-eyebrow">// QUEST · APPLICATION FORM</div>
+          <h2 class="trial-modal-title" id="trialModalTitle">申請選手班能力測驗體驗課</h2>
+          <p class="trial-modal-desc">第一堂為入班能力測驗。專人會在 1-2 個工作天內主動聯繫，了解孩子的程式背景與目標，再協助安排適合的測驗時段。</p>
+
+          <form class="trial-form" onsubmit="return handleTrialSubmit(event)">
+            <div class="trial-row-radio">
+              <label class="trial-radio">
+                <input type="radio" name="region" value="tw" checked>
+                <span>台灣地區</span>
+              </label>
+              <label class="trial-radio">
+                <input type="radio" name="region" value="overseas">
+                <span>海外</span>
+              </label>
+            </div>
+
+            <div class="trial-row">
+              <label class="trial-label">▸ 學生年級 <span class="trial-required">*</span></label>
+              <input type="text" class="trial-input" name="grade" placeholder="例：國一、國三、高一" required>
+            </div>
+
+            <div class="trial-row">
+              <label class="trial-label">▸ 聯絡電話 <span class="trial-required">*</span></label>
+              <div class="trial-phone-wrap">
+                <span class="trial-phone-flag">🇹🇼 +886</span>
+                <input type="tel" class="trial-input trial-phone-input" name="phone" placeholder="0912 345 678" required>
+              </div>
+            </div>
+
+            <div class="trial-row">
+              <label class="trial-label">▸ 所在縣市 <span class="trial-required">*</span></label>
+              <select class="trial-input" name="city" required>
+                <option value="">選擇縣市</option>
+                <option>台北市</option><option>新北市</option><option>桃園市</option>
+                <option>台中市</option><option>台南市</option><option>高雄市</option>
+                <option>基隆市</option><option>新竹市</option><option>新竹縣</option>
+                <option>苗栗縣</option><option>彰化縣</option><option>南投縣</option>
+                <option>雲林縣</option><option>嘉義市</option><option>嘉義縣</option>
+                <option>屏東縣</option><option>宜蘭縣</option><option>花蓮縣</option>
+                <option>台東縣</option><option>澎湖縣</option><option>金門縣</option>
+                <option>連江縣</option>
+              </select>
+            </div>
+
+            <div class="trial-row">
+              <label class="trial-label">▸ 孩子的程式背景 <span class="trial-required">*</span></label>
+              <select class="trial-input" name="background" required>
+                <option value="">請選擇</option>
+                <option>APCS 已考過（請告知級分）</option>
+                <option>已修畢橘蘋 APCS 培訓班 / 進階班</option>
+                <option>會 Python / C++ 基本語法</option>
+                <option>會 Scratch 但還沒接觸文字程式</option>
+                <option>完全沒接觸過程式（建議先諮詢基礎課）</option>
+              </select>
+            </div>
+
+            <div class="trial-row">
+              <label class="trial-label">▸ 偏好上課方式 <span class="trial-required">*</span></label>
+              <select class="trial-input" name="format" required>
+                <option value="">請選擇</option>
+                <option>線上課程</option>
+                <option>實體教室</option>
+                <option>都可以</option>
+              </select>
+            </div>
+
+            <div class="trial-recaptcha-stub">
+              <span>☑ 我不是機器人</span>
+              <small>（正式版包含 reCAPTCHA 驗證）</small>
+            </div>
+
+            <button type="submit" class="trial-submit-btn">▸ 送出申請</button>
+            <p class="trial-policy">送出資料即代表同意我們的<a href="https://orangeapple.co/privacy" target="_blank" rel="noopener">隱私權條款</a></p>
+          </form>
+
+          <div class="trial-success" hidden>
+            <div class="trial-success-mark">✓</div>
+            <h3>QUEST ACCEPTED · 已收到您的申請</h3>
+            <p>橘蘋專人會在 1-2 個工作天內主動聯繫您，<br>協助安排能力測驗體驗課時段。感謝您！</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({ once: true, offset: 50, duration: 600 });
+
+    // 進度條
+    (function() {
+      const bar = document.getElementById('readProgress');
+      if (!bar) return;
+      function update() {
+        const h = document.documentElement;
+        const total = h.scrollHeight - h.clientHeight;
+        const pct = total > 0 ? (h.scrollTop / total) * 100 : 0;
+        bar.style.width = pct + '%';
+      }
+      window.addEventListener('scroll', update, { passive: true });
+      update();
+    })();
+
+    function handleTrialSubmit(e) {
+      e.preventDefault();
+      const modal = document.getElementById('trialModal');
+      if (!modal) return false;
+      const form = modal.querySelector('.trial-form');
+      const success = modal.querySelector('.trial-success');
+      form.style.display = 'none';
+      success.hidden = false;
+      modal.addEventListener('hidden.bs.modal', function reset() {
+        form.style.display = 'block';
+        form.reset();
+        success.hidden = true;
+        modal.removeEventListener('hidden.bs.modal', reset);
+      });
+      return false;
+    }
+
+    // 手機 sticky CTA
+    (function() {
+      const sticky = document.getElementById('mobile-sticky-cta');
+      const hero = document.querySelector('.hero');
+      const cta = document.getElementById('cta');
+      if (!sticky || !hero) return;
+      let ticking = false;
+      function update() {
+        const heroBottom = hero.getBoundingClientRect().bottom;
+        const ctaTop = cta ? cta.getBoundingClientRect().top : Infinity;
+        const vh = window.innerHeight;
+        const shouldShow = heroBottom < 80 && ctaTop > vh - 60;
+        sticky.classList.toggle('visible', shouldShow);
+        ticking = false;
+      }
+      window.addEventListener('scroll', () => {
+        if (!ticking) { requestAnimationFrame(update); ticking = true; }
+      }, { passive: true });
+      update();
+    })();
+
+    // Mission Briefing 分類 chips
+    (function() {
+      const wrap = document.querySelector('.mb-list');
+      const chips = document.querySelectorAll('.mb-chip');
+      if (!wrap || !chips.length) return;
+      chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          const cat = chip.dataset.cat;
+          wrap.setAttribute('data-active', cat);
+          chips.forEach(c => c.classList.remove('active'));
+          chip.classList.add('active');
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
