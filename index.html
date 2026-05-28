@@ -1612,7 +1612,27 @@
       max-width: 1100px;
       margin: 0 auto;
     }
-    @media (max-width: 768px) { .quest-log { grid-template-columns: 1fr; } }
+    /* 手機：兩個 Phase 卡改橫滑 */
+    @media (max-width: 768px) {
+      .quest-log {
+        display: flex;
+        grid-template-columns: none;
+        flex-direction: row;
+        gap: 14px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding: 6px 22px 18px;
+        margin: 0 -22px;
+        scrollbar-width: none;
+        scroll-padding-left: 22px;
+        max-width: none;
+      }
+      .quest-log::-webkit-scrollbar { display: none; }
+      .quest-log .quest-phase {
+        flex: 0 0 88%;
+        scroll-snap-align: start;
+      }
+    }
     .quest-phase {
       background: var(--bg-dark-2);
       border: 1px solid var(--line-bright);
@@ -1714,7 +1734,29 @@
       margin: 0 auto;
       border: 1px solid var(--line-dim);
     }
-    @media (max-width: 768px) { .req-grid { grid-template-columns: 1fr; } }
+    /* 手機：ELIGIBLE / MISMATCH 兩張卡改橫滑 */
+    @media (max-width: 768px) {
+      .req-grid {
+        display: flex;
+        grid-template-columns: none;
+        flex-direction: row;
+        gap: 14px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding: 6px 22px 18px;
+        margin: 0 -22px;
+        border: 0;
+        scrollbar-width: none;
+        scroll-padding-left: 22px;
+        max-width: none;
+      }
+      .req-grid::-webkit-scrollbar { display: none; }
+      .req-grid .req-col {
+        flex: 0 0 86%;
+        scroll-snap-align: start;
+        border: 1px solid var(--line-bright);
+      }
+    }
     .req-col {
       padding: 40px;
     }
@@ -1724,7 +1766,8 @@
       background: linear-gradient(180deg, rgba(255,163,0,0.06) 0%, transparent 100%);
     }
     @media (max-width: 768px) {
-      .req-col-yes { border-right: none; border-bottom: 1px solid var(--line-dim); }
+      .req-col-yes { border-right: 1px solid var(--line-bright); border-bottom: none; border-color: var(--orange); }
+      .req-col-no { border-color: var(--red); }
     }
     .req-col-no { background: rgba(255,77,94,0.04); }
     .req-col-label {
