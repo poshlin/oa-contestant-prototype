@@ -705,6 +705,30 @@
       .struggle-item { grid-template-columns: 1fr; gap: 24px; padding: 48px 0; }
       .struggle-divider { display: none; }
     }
+    /* 手機：3 組 STRUGGLE 改橫向卡片滑動（與 BOSS 列表一致） */
+    @media (max-width: 768px) {
+      .struggle-list {
+        flex-direction: row;
+        gap: 14px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding: 12px 22px 24px;
+        margin: 0 -22px;
+        scrollbar-width: none;
+      }
+      .struggle-list::-webkit-scrollbar { display: none; }
+      .struggle-item {
+        flex: 0 0 84%;
+        scroll-snap-align: center;
+        padding: 24px;
+        background: var(--bg-dark-2);
+        border: 1px solid var(--line-bright);
+        border-bottom: 1px solid var(--line-bright);
+        gap: 16px;
+      }
+      .struggle-mark { margin-bottom: 4px; }
+      .struggle-mark-num { font-size: 1.8rem; display: inline; margin-right: 8px; }
+    }
     .struggle-mark {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.78rem;
@@ -1401,138 +1425,168 @@
     }
 
     /* ══════════════════════════════════════
-       05 / SKILL TREE
+       05 / SKILL TREE — 1 CORE + 4 SUPPORT
     ══════════════════════════════════════ */
     .skill-tree {
-      position: relative;
       max-width: 1080px;
       margin: 0 auto;
-      aspect-ratio: 16/10;
-      min-height: 480px;
-      background:
-        radial-gradient(ellipse at center, rgba(255,163,0,0.08) 0%, transparent 65%),
-        url('assets/G-skills.png') center / contain no-repeat;
-    }
-    .skill-tree::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at center, transparent 0%, rgba(10,8,20,0.55) 80%);
-      pointer-events: none;
-      z-index: 1;
-    }
-    .skill-tree > * { position: relative; z-index: 2; }
-    .skill-node {
-      position: absolute;
-      width: 180px;
-      height: 200px;
-      transform: translate(-50%, -50%);
-    }
-    .skill-node-hex {
-      width: 100%; height: 100%;
-      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-      background: var(--bg-dark-2);
-      border: 2px solid var(--orange);
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      padding: 0 20px;
-      transition: all 0.3s;
-      cursor: default;
+      gap: 20px;
       position: relative;
     }
-    .skill-node.core .skill-node-hex {
-      background: linear-gradient(135deg, var(--orange) 0%, var(--orange-dark) 100%);
-      filter: drop-shadow(0 0 32px var(--orange-glow));
+
+    /* ── CORE 大卡（金色發光，置頂） ── */
+    .skill-core {
+      position: relative;
+      padding: 36px 40px;
+      background:
+        radial-gradient(ellipse at center, rgba(255,215,0,0.12) 0%, transparent 70%),
+        linear-gradient(135deg, rgba(255,163,0,0.12) 0%, rgba(255,77,94,0.06) 100%),
+        var(--bg-dark-2);
+      border: 2px solid var(--gold);
+      box-shadow: 0 0 0 1px rgba(255,215,0,0.3), 0 0 48px rgba(255,215,0,0.22), inset 0 1px 0 rgba(255,215,0,0.2);
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 28px;
+      align-items: center;
     }
-    .skill-node:hover .skill-node-hex {
-      transform: scale(1.08);
-      box-shadow: 0 0 0 2px var(--orange);
+    .skill-core::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      box-shadow: 0 0 16px var(--gold);
     }
-    .skill-node.core:hover .skill-node-hex { transform: scale(1.06); }
-    .skill-node-num {
+    .skill-core-badge {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 12px 20px;
+      background: var(--gold);
+      color: var(--bg-dark);
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
+      font-weight: 900;
+      letter-spacing: 2.5px;
+      text-align: center;
+      border-radius: 2px;
+      box-shadow: 0 0 20px rgba(255,215,0,0.55);
+    }
+    .skill-core-badge-mark { font-size: 0.7rem; letter-spacing: 3px; }
+    .skill-core-badge-label { font-size: 1.5rem; letter-spacing: 4px; }
+    .skill-core-body { display: flex; flex-direction: column; gap: 8px; }
+    .skill-core-name {
+      font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+      font-weight: 900;
+      color: var(--gold);
+      margin: 0;
+      letter-spacing: -1px;
+      line-height: 1.05;
+      text-shadow: 0 0 24px rgba(255,215,0,0.4);
+    }
+    .skill-core-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.86rem;
       letter-spacing: 2px;
+      color: rgba(255,215,0,0.85);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .skill-core-note {
+      font-size: 0.96rem;
+      color: var(--text-glow);
+      margin: 4px 0 0;
+      line-height: 1.5;
+    }
+    .skill-core-note strong { color: var(--gold); font-weight: 700; }
+    .skill-core-deco {
+      font-size: 2.6rem;
+      color: var(--gold);
+      filter: drop-shadow(0 0 12px rgba(255,215,0,0.6));
+      animation: corePulse 3s ease-in-out infinite;
+    }
+    @keyframes corePulse {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.08); opacity: 1; }
+    }
+    @media (max-width: 768px) {
+      .skill-core {
+        grid-template-columns: 1fr;
+        gap: 14px;
+        padding: 28px 24px;
+        text-align: center;
+      }
+      .skill-core-badge { flex-direction: row; justify-content: center; padding: 8px 16px; align-self: center; }
+      .skill-core-badge-mark { font-size: 0.66rem; }
+      .skill-core-badge-label { font-size: 1.1rem; }
+      .skill-core-deco { display: none; }
+    }
+
+    /* ── 4 個 SUPPORT 技能小卡 ── */
+    .skill-supports {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+    .skill-card {
+      padding: 22px 20px;
+      background: var(--bg-dark-2);
+      border: 1px solid var(--line-bright);
+      transition: all 0.3s;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 160px;
+    }
+    .skill-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 36px; height: 2px;
+      background: var(--orange);
+      box-shadow: 0 0 8px var(--orange);
+    }
+    .skill-card:hover {
+      border-color: var(--orange);
+      transform: translateY(-3px);
+      box-shadow: 0 0 24px var(--orange-glow);
+    }
+    .skill-card-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 2.5px;
       color: var(--orange);
       font-weight: 700;
     }
-    .skill-node.core .skill-node-num { color: rgba(0,0,0,0.6); }
-    .skill-node-name {
-      font-size: 1.05rem;
+    .skill-card-name {
+      font-size: 1.18rem;
       font-weight: 900;
       color: var(--text-light);
-      text-align: center;
-      line-height: 1.2;
+      margin: 0;
+      letter-spacing: -0.3px;
+      line-height: 1.25;
     }
-    .skill-node.core .skill-node-name { color: var(--bg-dark); font-size: 1.2rem; }
-    .skill-node-tag {
+    .skill-card-tag {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.62rem;
+      font-size: 0.72rem;
       letter-spacing: 1.5px;
       color: var(--text-mute);
       text-transform: uppercase;
-      text-align: center;
+      margin-top: auto;
+      padding-top: 12px;
+      border-top: 1px dashed var(--line-dim);
     }
-    .skill-node.core .skill-node-tag { color: rgba(0,0,0,0.55); }
-
-    /* 五個 node 位置（桌面） */
-    .skill-node.pos-center { top: 50%; left: 50%; }
-    .skill-node.pos-tl { top: 18%; left: 22%; }
-    .skill-node.pos-tr { top: 18%; left: 78%; }
-    .skill-node.pos-bl { top: 82%; left: 22%; }
-    .skill-node.pos-br { top: 82%; left: 78%; }
-
-    /* 連線（SVG） */
-    .skill-lines {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
+    @media (max-width: 991px) {
+      .skill-supports { grid-template-columns: repeat(2, 1fr); }
     }
-    .skill-lines line {
-      stroke: var(--orange);
-      stroke-width: 1.5;
-      stroke-dasharray: 4 6;
-      opacity: 0.5;
-      animation: linePulse 4s ease-in-out infinite;
-    }
-    @keyframes linePulse {
-      0%, 100% { opacity: 0.3; }
-      50% { opacity: 0.7; }
-    }
-
-    /* 手機：技能樹改 list */
-    @media (max-width: 768px) {
-      .skill-tree {
-        aspect-ratio: auto;
-        min-height: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-      }
-      .skill-node {
-        position: relative;
-        top: auto !important; left: auto !important;
-        transform: none;
-        width: 100%;
-        height: auto;
-      }
-      .skill-node-hex {
-        clip-path: none;
-        flex-direction: row;
-        padding: 22px 24px;
-        gap: 16px;
-        justify-content: flex-start;
-        text-align: left;
-        background: var(--bg-dark-2);
-      }
-      .skill-node.core .skill-node-hex { padding: 22px 24px; }
-      .skill-node-num { font-size: 0.8rem; flex-shrink: 0; }
-      .skill-node-name { font-size: 1.05rem; }
-      .skill-node-tag { font-size: 0.7rem; margin-left: auto; }
-      .skill-lines { display: none; }
+    @media (max-width: 480px) {
+      .skill-supports { grid-template-columns: 1fr; gap: 12px; }
+      .skill-card { min-height: 0; padding: 18px 20px; flex-direction: row; align-items: center; flex-wrap: wrap; gap: 12px; }
+      .skill-card-num { flex: 0 0 auto; }
+      .skill-card-name { flex: 1 1 auto; font-size: 1.05rem; }
+      .skill-card-tag { flex: 1 0 100%; margin-top: 0; padding-top: 10px; }
     }
 
     /* ══════════════════════════════════════
@@ -3063,56 +3117,47 @@
         每期 15 週，解鎖<br>
         <span class="accent">5 大核心技能</span>。
       </h2>
-      <p class="epic-lede" style="margin-bottom: 64px;">
-        三大領域（基礎語法 / 資料結構 / 演算法）× 八項程式核心技巧。<br>
-        <strong>中央節點「應用演算法」是 APCS 級分差距的關鍵</strong>。
+      <p class="epic-lede" style="margin-bottom: 56px;">
+        1 個核心技能（應用演算法）+ 4 個支援技能。<br>
+        <strong>應用演算法是 APCS 級分差距的真正關鍵</strong>，其餘 4 項都是為了支撐它。
       </p>
 
       <div class="skill-tree">
-        <svg class="skill-lines" preserveAspectRatio="none" viewBox="0 0 100 100">
-          <line x1="50" y1="50" x2="22" y2="18" />
-          <line x1="50" y1="50" x2="78" y2="18" />
-          <line x1="50" y1="50" x2="22" y2="82" />
-          <line x1="50" y1="50" x2="78" y2="82" />
-        </svg>
-
-        <div class="skill-node pos-tl">
-          <div class="skill-node-hex">
-            <span class="skill-node-num">SKILL 01</span>
-            <span class="skill-node-name">資料結構</span>
-            <span class="skill-node-tag">堆疊 / 佇列 / 樹</span>
+        <!-- CORE 大卡：金色發光，最重要 -->
+        <div class="skill-core">
+          <div class="skill-core-badge">
+            <span class="skill-core-badge-mark">★ CORE</span>
+            <span class="skill-core-badge-label">SKILL</span>
           </div>
+          <div class="skill-core-body">
+            <h3 class="skill-core-name">應用演算法</h3>
+            <span class="skill-core-tag">DP / 圖論 / 遞迴 / 樹狀圖</span>
+            <p class="skill-core-note"><strong>真正拉開 APCS 級分差距的關鍵能力</strong>。前 4 項技能都是為了支撐這項。</p>
+          </div>
+          <div class="skill-core-deco" aria-hidden="true">★</div>
         </div>
 
-        <div class="skill-node pos-tr">
-          <div class="skill-node-hex">
-            <span class="skill-node-num">SKILL 03</span>
-            <span class="skill-node-name">程式效能</span>
-            <span class="skill-node-tag">Big-O / TLE 避免</span>
+        <!-- 4 個 SUPPORT 技能小卡 -->
+        <div class="skill-supports">
+          <div class="skill-card">
+            <span class="skill-card-num">SKILL 01</span>
+            <h4 class="skill-card-name">資料結構</h4>
+            <span class="skill-card-tag">堆疊 / 佇列 / 樹</span>
           </div>
-        </div>
-
-        <div class="skill-node pos-center core">
-          <div class="skill-node-hex">
-            <span class="skill-node-num">★ CORE</span>
-            <span class="skill-node-name">應用演算法</span>
-            <span class="skill-node-tag">DP / 圖論 / 遞迴</span>
+          <div class="skill-card">
+            <span class="skill-card-num">SKILL 02</span>
+            <h4 class="skill-card-name">程式效能</h4>
+            <span class="skill-card-tag">Big-O / TLE 避免</span>
           </div>
-        </div>
-
-        <div class="skill-node pos-bl">
-          <div class="skill-node-hex">
-            <span class="skill-node-num">SKILL 04</span>
-            <span class="skill-node-name">解題工具</span>
-            <span class="skill-node-tag">題型分析 / IDE</span>
+          <div class="skill-card">
+            <span class="skill-card-num">SKILL 03</span>
+            <h4 class="skill-card-name">解題工具</h4>
+            <span class="skill-card-tag">題型分析 / IDE</span>
           </div>
-        </div>
-
-        <div class="skill-node pos-br">
-          <div class="skill-node-hex">
-            <span class="skill-node-num">SKILL 05</span>
-            <span class="skill-node-name">競賽實戰</span>
-            <span class="skill-node-tag">APCS / TOI / CPE</span>
+          <div class="skill-card">
+            <span class="skill-card-num">SKILL 04</span>
+            <h4 class="skill-card-name">競賽實戰</h4>
+            <span class="skill-card-tag">APCS / TOI / CPE</span>
           </div>
         </div>
       </div>
