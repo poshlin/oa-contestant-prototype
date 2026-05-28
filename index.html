@@ -1252,6 +1252,12 @@
       align-items: center;
       margin-bottom: 16px;
       gap: 12px;
+      flex-wrap: wrap;
+    }
+    /* 手機：tag 與 en label 改上下堆疊，避免擠成兩行斷字 */
+    @media (max-width: 575px) {
+      .slot-head { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .slot-label-en { font-size: 0.6rem; letter-spacing: 1.5px; }
     }
     .slot-tag {
       font-family: 'JetBrains Mono', monospace;
@@ -1260,6 +1266,7 @@
       font-weight: 700;
       padding: 4px 10px;
       text-transform: uppercase;
+      white-space: nowrap;
     }
     .slot-active .slot-tag { background: var(--orange); color: var(--bg-dark); box-shadow: 0 0 14px var(--orange-glow); }
     .slot-planning .slot-tag { background: var(--teal); color: #003E37; }
@@ -1269,6 +1276,7 @@
       letter-spacing: 2px;
       color: var(--text-dim);
       text-transform: uppercase;
+      white-space: nowrap;
     }
     .slot-title {
       font-size: 1.4rem;
@@ -1596,13 +1604,22 @@
     @media (max-width: 768px) {
       .skill-core {
         grid-template-columns: 1fr;
-        gap: 14px;
-        padding: 28px 24px;
+        gap: 12px;
+        padding: 22px 18px;
         text-align: center;
       }
-      .skill-core-badge { flex-direction: row; justify-content: center; padding: 8px 16px; align-self: center; }
-      .skill-core-badge-mark { font-size: 0.66rem; }
-      .skill-core-badge-label { font-size: 1.1rem; }
+      .skill-core-badge {
+        flex-direction: row;
+        justify-content: center;
+        gap: 8px;
+        padding: 6px 14px;
+        align-self: center;
+      }
+      .skill-core-badge-mark { font-size: 0.6rem; letter-spacing: 2px; }
+      .skill-core-badge-label { font-size: 0.9rem; letter-spacing: 2px; }
+      .skill-core-name { font-size: 1.6rem; }
+      .skill-core-tag { font-size: 0.78rem; letter-spacing: 1.5px; }
+      .skill-core-note { font-size: 0.88rem; line-height: 1.55; word-break: break-word; }
       .skill-core-deco { display: none; }
     }
 
@@ -3372,7 +3389,7 @@
           <div class="skill-core-body">
             <h3 class="skill-core-name">應用演算法</h3>
             <span class="skill-core-tag">DP / 圖論 / 遞迴 / 樹狀圖</span>
-            <p class="skill-core-note"><strong>真正拉開 APCS 級分差距的關鍵能力</strong>。前 4 項技能都是為了支撐這項。</p>
+            <p class="skill-core-note"><strong>真正拉開 APCS 級分差距的關鍵能力</strong>。<br>前 4 項技能都是為了支撐這項。</p>
           </div>
           <div class="skill-core-deco" aria-hidden="true">★</div>
         </div>
