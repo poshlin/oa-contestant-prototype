@@ -210,6 +210,17 @@
       color: var(--gold);
       text-transform: uppercase;
       font-weight: 700;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 10px;
+      align-items: baseline;
+    }
+    .journey-map-tag-main { white-space: nowrap; }
+    .journey-map-tag-sub {
+      font-size: 0.66rem;
+      letter-spacing: 1.5px;
+      color: rgba(255,215,0,0.7);
+      white-space: nowrap;
     }
     .journey-map-text {
       font-size: 0.96rem;
@@ -222,6 +233,8 @@
     @media (max-width: 768px) {
       .journey-map-caption { position: static; padding: 16px 20px 20px; background: var(--bg-dark); }
       .journey-map-text { font-size: 0.92rem; }
+      .journey-map-tag { font-size: 0.66rem; letter-spacing: 1.5px; gap: 2px 8px; }
+      .journey-map-tag-sub { font-size: 0.6rem; letter-spacing: 1px; }
     }
 
     /* 章節大標 */
@@ -1612,6 +1625,8 @@
       justify-content: space-between;
       align-items: baseline;
       background: rgba(255,163,0,0.04);
+      gap: 16px;
+      flex-wrap: wrap;
     }
     .quest-phase-label {
       font-family: 'JetBrains Mono', monospace;
@@ -1634,6 +1649,20 @@
       font-size: 0.78rem;
       color: var(--text-dim);
       letter-spacing: 1.5px;
+      white-space: nowrap;
+    }
+    @media (max-width: 768px) {
+      .quest-phase-head { padding: 20px 22px; gap: 10px; }
+      .quest-phase-label { font-size: 0.66rem; letter-spacing: 1.5px; margin-bottom: 4px; }
+      .quest-phase-title { font-size: 1.2rem; }
+      .quest-phase-time {
+        font-size: 0.72rem;
+        letter-spacing: 1px;
+        flex-basis: 100%;
+        order: 99;
+        padding-top: 8px;
+        border-top: 1px dashed var(--line-soft);
+      }
     }
     .quest-list {
       list-style: none;
@@ -2834,13 +2863,13 @@
           <div class="struggle-bad">
             <div class="struggle-tag">✕ BAD ENDING</div>
             <h3 class="struggle-title">沒實戰經驗 臨場失常</h3>
-            <p class="struggle-desc">時間壓力、未知題型、考場環境。平常解得出來，正式 APCS 卻拿不到分。</p>
+            <p class="struggle-desc">時間壓力、未知題型、考場環境。平常解得出來，正式 APCS 卻拿不到分。比賽次數太少 = <strong>沒有實戰肌肉記憶</strong>，努力與成績脫鉤。</p>
           </div>
           <div class="struggle-divider"></div>
           <div class="struggle-good">
             <div class="struggle-tag">→ TRUE ENDING</div>
             <h3 class="struggle-title">每月參賽養成肌肉記憶</h3>
-            <p class="struggle-desc">兩個月一次小比賽、15 堂內一次大比賽。真實上場累積履歷與心理素質。</p>
+            <p class="struggle-desc">兩個月一次小比賽、每期 15 堂內一次大比賽。真實上場累積履歷與心理素質。每場賽後教練帶選手檢討，<strong>把失分轉成下次的進步</strong>。</p>
           </div>
         </li>
       </ol>
@@ -3096,9 +3125,6 @@
         </div>
       </div>
 
-      <p style="text-align: center; margin-top: 40px; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; letter-spacing: 1.5px; color: var(--text-dim); text-transform: uppercase;">
-        + 班主任 VINA 老師 · 出席 / 請假 / 競賽報名提醒
-      </p>
     </div>
   </section>
 
@@ -3187,7 +3213,10 @@
       <div class="journey-map" aria-label="每期 15 週闖關旅程地圖">
         <img src="assets/I-map.png" alt="每期 15 週闖關旅程地圖" loading="lazy">
         <div class="journey-map-caption">
-          <span class="journey-map-tag">▸ WORLD MAP · 1 SEASON = 15 WEEKS</span>
+          <span class="journey-map-tag">
+            <span class="journey-map-tag-main">▸ WORLD MAP</span>
+            <span class="journey-map-tag-sub">1 SEASON = 15 WEEKS</span>
+          </span>
           <p class="journey-map-text">起點是<strong>程式基礎村</strong>，路上會穿越演算法森林、資料結構峽谷，最終抵達<strong>競賽王城</strong>。<strong>許多選手連續訓練多期</strong>，一路打到上大學。</p>
         </div>
       </div>
@@ -3876,7 +3905,7 @@
             <strong>提供 2 次完整補課機會</strong>。每期 15 週為 1 個訓練週期：<br>
             ① <strong>請假 1 次</strong> → 該期自動<strong>順延 1 週</strong>（變 16 週）<br>
             ② <strong>請假 2 次</strong> → 該期自動<strong>順延 2 週</strong>（變 17 週）<br>
-            這樣設計是為了確保每位選手都能完整跟上進度，<strong>不讓任何一堂課白白消失</strong>。若超過 2 次缺課或有特殊狀況，請與班主任 Vina 老師討論個別安排。
+            這樣設計是為了確保每位選手都能完整跟上進度，<strong>不讓任何一堂課白白消失</strong>。若超過 2 次缺課或有特殊狀況，請與班主任聯繫討論個別安排。
           </div></div>
         </li>
 
